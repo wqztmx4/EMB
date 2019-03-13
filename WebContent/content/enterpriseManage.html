@@ -1,0 +1,459 @@
+<div class="easyui-layout" data-options="fit:true">
+	<!-- Begin of toolbar -->
+	<div id="enterpriseManage-toolbar">
+		<div class="wu-toolbar-button">
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">新增</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView()" plain="true">查看</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="importData()"plain="true">导入</a>
+			<!--  <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-redo" onclick="cancel()" plain="true">重做</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="reload()" plain="true">总计</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a> -->
+		</div>
+		<div class="wu-toolbar-search">
+			<!--             <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
+            <label>结束时间：</label><input class="easyui-datebox" style="width:100px"> -->
+			<label>企 业 类 型：</label> <select id="search_enterpriseType" class="easyui-combobox" panelHeight="auto" style="width: 100px">
+				<option value="">全部类型</option>
+				<option value="101">危化品使用</option>
+				<option value="102">危化品经营</option>
+				<option value="103">危化品生产</option>
+			</select> 
+			<label>所 在 区 县：</label> 
+			<select id="search_countries" class="easyui-combobox" panelHeight="auto" style="width: 100px">
+				<option value="">所有区县</option>
+				<option value="1">市直</option>
+				<option value="2">青州</option>
+				<option value="3">诸城</option>
+				<option value="4">寿光</option>
+				<option value="5">安丘</option>
+				<option value="6">高密</option>
+				<option value="7">昌邑</option>
+				<option value="8">临朐</option>
+				<option value="9">昌乐</option>
+			</select> 
+			<label> 企业名称：</label><input id="search_enterpriseName" class="wu-text" style="width: 100px"> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchInfo()">开始检索</a>
+		</div>
+	</div>
+	<!-- End of toolbar -->
+	<table id="enterpriseManage-datagrid" class="easyui-datagrid" toolbar="#enterpriseManage-toolbar"></table>
+</div>
+<!-- Begin of easyui-dialog -->
+<div id="enterpriseManage-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width: 700px; padding: 10px;">
+	<form id="enterpriseManage-form" method="post">
+		<table>
+			<tr>
+				<td width="80" align="right">企 业 名 称:</td>
+				<td><input id="enterpriseName" type="text" name="enterpriseName" class="wu-text" /></td>
+			</tr>
+			<tr>
+				<td align="right">企 业 类 型:</td>
+				<td><select id="enterpriseType" class="easyui-combobox" name="enterpriseType" style="width: 200px;">
+						<option value="101">危化品使用</option>
+						<option value="102">危化品经营</option>
+						<option value="103">危化品生产</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td align="right">承 诺 人:</td>
+				<td><input id="acceptor" type="text" name="acceptor" class="wu-text" /></td>
+			</tr>
+			<tr>
+				<td align="right">用 户 名:</td>
+				<td><input id="userName" type="text" name="userName" class="wu-text" /></td>
+			</tr>
+			<tr>
+				<td align="right">密 码:</td>
+				<td><input id="password" type="text" name="password" class="wu-text" /></td>
+			</tr>
+			<tr>
+				<td align="right">县 区:</td>
+				<td><select id="countries" class="easyui-combobox" name="countries" style="width: 200px;">
+						<option value="1">市直</option>
+						<option value="2">青州</option>
+						<option value="3">诸城</option>
+						<option value="4">寿光</option>
+						<option value="5">安丘</option>
+						<option value="6">高密</option>
+						<option value="7">昌邑</option>
+						<option value="8">临朐</option>
+						<option value="9">昌乐</option>
+						<!-- <option value="9">高新</option>
+						<option value="10">滨海</option>
+						<option value="11">保税</option>
+						<option value="12">峡山</option>
+						<option value="13">经济</option> -->
+				</select></td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+
+
+
+<!-- 文件上传 -->
+<div id="uploadFile-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width: 700px; padding: 10px;">
+	<form id="uploadFile-form" method="post">
+		<table>
+			<tr>
+				<td width="80" align="right">上 传 文 件:</td>
+				<td><input class="easyui-filebox" name="uploadFile" data-options="prompt:'Choose a file...'" style="width:400px"></td>
+			</tr>
+			<tr>
+				<a href="#" class="easyui-linkbutton" style="width:180px">上 传</a>
+			</tr>
+		</table>
+	</form>
+</div>
+<!-- End of easyui-dialog -->
+<script type="text/javascript">
+	/**
+	* Name 添加记录
+	*/
+	function add(){
+		$('#enterpriseManage-form').form('submit', {
+			url:'enterprise?method=add',
+			success:function(data){
+				var data = eval('(' + data + ')');
+				if(data.changedNum>0){
+					$.messager.alert('信息提示','添加成功！','info');
+					$('#enterpriseManage-dialog').dialog('close');
+					$('#enterpriseManage-datagrid').datagrid('reload');
+				}
+				else
+				{
+					$.messager.alert('信息提示','添加失败！','info');
+				}
+			}
+		});
+	}
+	
+	/**
+	* Name 修改记录
+	*/
+	function edit(id){
+		$('#enterpriseManage-form').form('submit', {
+			url:'enterprise?method=edit&id='+id,
+			dataType:'json',
+			success:function(data){
+				var data = eval('(' + data + ')');
+				if(data.changedNum>0){
+					$.messager.alert('信息提示','修改成功！','info');
+					$('#enterpriseManage-dialog').dialog('close');
+					$('#enterpriseManage-datagrid').datagrid('reload');
+				}
+				else
+				{
+					$.messager.alert('信息提示','修改失败！','info');
+				}
+			}
+		});
+	}
+	
+	/**
+	* Name 删除记录
+	*/
+	function remove(){
+		$.messager.confirm('信息提示','确定要删除该记录？', function(result){
+			if(result){
+				var items = $('#enterpriseManage-datagrid').datagrid('getSelections');
+				var ids = [];
+				for (var i = 0, j = items.length; i < j; i++) {
+	                   ids.push(items[i].id);
+	            }
+	            ids.join(',');
+				//alert(ids);return;
+ 				$.ajax({
+					url:'enterprise?method=remove',
+					data:{
+						remove_ids:ids.toString()
+					},
+					success:function(data){
+						var data = eval('(' + data + ')');
+						if(data.changedNum>0){
+							$.messager.alert('信息提示','删除成功！','info');
+							$('#enterpriseManage-dialog').dialog('close');
+							$('#enterpriseManage-datagrid').datagrid('reload');
+						}
+						else
+						{
+							$.messager.alert('信息提示','删除失败！','info');		
+						}
+					}	
+				}); 
+			}	
+		});
+	}
+	
+	/**
+	* Name 打开添加窗口
+	*/
+	function openAdd(){
+		$('#enterpriseManage-form').form('clear');
+		$('#enterpriseManage-dialog').dialog({
+			closed: false,
+			modal:true,
+            title: "添加信息",
+            buttons: [{
+                text: '保存',
+                iconCls: 'icon-ok',
+                handler: add
+            }, {
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function () {
+                    $('#wu-dialog-2').dialog('close');                    
+                }
+            }]
+        });
+	}
+	
+	/**
+	* Name 打开修改窗口
+	*/
+	function openEdit(){
+		$('#enterpriseManage-form').form('clear');
+		var item = $('#enterpriseManage-datagrid').datagrid('getSelected');
+		//alert(item.productid);return;
+		$.ajax({
+			url:'enterprise?method=select',
+			data:{
+				id:item.id
+			},
+			success:function(data){
+				$('#enterpriseManage-dialog').dialog({
+					closed: false,
+					modal:true,
+		            title: "修改信息",
+		            buttons: [{
+		                text: '保存',
+		                iconCls: 'icon-ok',
+		                handler: function (){
+		                	edit(item.id);
+		                }
+		            }, {
+		                text: '取消',
+		                iconCls: 'icon-cancel',
+		                handler: function () {
+		                    $('#enterpriseManage-dialog').dialog('close');                    
+		                }
+		            }]
+		        });
+				$('#enterpriseManage-form').form('load', data.rows[0])
+			}	
+		});
+	}	
+	
+	
+	
+	/**
+	* Name 打开查看窗口
+	*/
+	function openView(){
+		$('#enterpriseManage-form').form('clear');
+		var item = $('#enterpriseManage-datagrid').datagrid('getSelected');
+		//alert(item.productid);return;
+		$.ajax({
+			url:'enterprise?method=select',
+			data:{
+				id:item.id
+			},
+			success:function(data){
+				 if(data){
+					 $('#enterpriseManage-form').form('load', data.rows[0]);
+				}
+				else{
+					$('#enterpriseManage-dialog').dialog();
+				} 
+			}	
+		});
+		$('#enterpriseManage-dialog').dialog({
+			closed: false,
+			modal:true,
+            title: "查看信息"
+        });
+	}
+	
+	
+	/**
+	* function:导入数据，xls或xlsx格式的数据
+	*/
+	function importData(){
+		$('#uploadFile-dialog').dialog('open');
+		/* $('#uploadFile-form').form('submit', {
+			url:'',
+			success:function(data){
+				if(data){
+					$.messager.alert('信息提示','添加成功！','info');
+				}
+				else
+				{
+					$.messager.alert('信息提示','添加失败！','info');
+				}
+			}
+		}); */
+	}
+	
+	
+	/**
+	* function:控制查询功能
+	*/
+	function searchInfo(){
+		 $.ajax({
+			url:'enterprise?method=select',
+			data:{
+				search_enterpriseType:$('#search_enterpriseType').combobox('getValue'),
+				search_countries:$('#search_countries').combobox('getValue'),
+				search_enterpriseName:$('#search_enterpriseName').val()
+			},
+			success:function(data){
+					 $('#enterpriseManage-datagrid').datagrid('loadData',data);
+			}	
+		});
+		
+	}
+	
+	/**
+	* Name 分页过滤器
+	*/
+	function pagerFilter(data){            
+		if (typeof data.length == 'number' && typeof data.splice == 'function'){// is array                
+			data = {                   
+				total: data.length,                   
+				rows: data               
+			}            
+		}        
+		var dg = $(this);         
+		var opts = dg.datagrid('options');          
+		var pager = dg.datagrid('getPager');          
+		pager.pagination({                
+			onSelectPage:function(pageNum, pageSize){                 
+				opts.pageNumber = pageNum;                   
+				opts.pageSize = pageSize;                
+				pager.pagination('refresh',{pageNumber:pageNum,pageSize:pageSize});                  
+				dg.datagrid('loadData',data);                
+			}          
+		});           
+		if (!data.originalRows){               
+			data.originalRows = (data.rows);       
+		}         
+		var start = (opts.pageNumber-1)*parseInt(opts.pageSize);          
+		var end = start + parseInt(opts.pageSize);        
+		data.rows = (data.originalRows.slice(start, end));         
+		return data;       
+	}
+	
+	/**
+	* Name 载入数据
+	*/
+ 	$('#enterpriseManage-datagrid').datagrid({
+		url:'enterprise?method=select',
+		loadFilter:pagerFilter,		
+		rownumbers:true,
+		singleSelect:false,
+		pageSize:20,           
+		pagination:true,
+		multiSort:true,
+		fitColumns:true,
+		fit:true,
+		columns:[[
+			{ checkbox:true},
+			{ field:'id',title:'编号',width:100,sortable:true},
+			{ field:'enterpriseName',title:'企业名称',width:100,sortable:true},
+			{ field:'enterpriseType',title:'企业类型',width:100,formatter:function (value, row , index){
+				switch (row.enterpriseType) {
+				case '101':
+					return "危化品使用";
+					break;
+				case '102':
+					return "危化品经营";
+					break;
+				case '103':
+					return "危化品生产";
+					break;
+				default:
+					break;
+				}}},
+			{ field:'acceptor',title:'承诺人',width:100},
+			{ field:'userName',title:'用户名',width:100},
+			{ field:'password',title:'密码',width:100},
+			{ field:'countries',title:'区县',width:100,formatter:function(value,row,index){
+				switch (row.countries) {
+				case 1:
+					return "市直";
+					break;
+				case 2:
+					return "青州";
+					break;
+				case 3:
+					return "诸城";
+					break;
+				case 4:
+					return "寿光";
+					break;
+				case 5:
+					return "安丘";
+					break;
+				case 6:
+					return "高密";
+					break;
+				case 7:
+					return "昌邑";
+					break;
+				case 8:
+					return "临朐";
+					break;
+				case 9:
+					return "昌乐";
+					break;
+				default:
+					return "";
+					break;
+				}
+				
+			}}
+		]],
+	onDblClickRow: function(rowIndex,rowData){
+		$('#enterpriseManage-form').form('clear');
+		//alert(item.productid);return;
+		$.ajax({
+			url:'enterprise?method=select',
+			data:{
+				id:rowData.id
+			},
+			success:function(data){
+				$('#enterpriseManage-dialog').dialog({
+					closed: false,
+					modal:true,
+		            title: "修改信息",
+		            buttons: [{
+		                text: '保存',
+		                iconCls: 'icon-ok',
+		                handler: function (){
+		                	edit(rowData.id);
+		                }
+		            }, {
+		                text: '取消',
+		                iconCls: 'icon-cancel',
+		                handler: function () {
+		                    $('#enterpriseManage-dialog').dialog('close');                    
+		                }
+		            }]
+		        });
+				$('#enterpriseManage-form').form('load', data.rows[0])
+			}	
+		});
+		
+	}
+	});
+
+</script>

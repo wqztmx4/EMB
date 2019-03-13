@@ -1,0 +1,101 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+
+<title>潍坊市危化品信息公示系统</title>
+
+<link rel="stylesheet" type="text/css" href="css/login.css" />
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+
+<script type="text/javascript">
+	function checkLogin() {
+		var userName = document.getElementById("userName").value;
+		var password = document.getElementById("password").value;
+		if (userName == null || name == '') {
+			alert("用户名不能为空");
+			return false;
+		} else if (password == null || password == '') {
+			alert("密码不能为空");
+			return false;
+		}
+		return true;
+	}
+
+	function login() {
+		if (checkLogin) {
+			$.ajax({
+				//几个参数需要注意一下
+				type : "POST",//方法类型
+				dataType : "json",//预期服务器返回的数据类型
+				url : "login",//url
+				data : $('#formLogin').serialize(),
+				success : function(result) {
+					console.log(result);//打印服务端返回的数据(调试用)
+					sessionStorage.setItem("id",result.id);
+					sessionStorage.setItem("enterpriseName",result.enterpriseName);
+					sessionStorage.setItem("enterpriseType",result.enterpriseType);
+					sessionStorage.setItem("acceptor",result.acceptor);
+					sessionStorage.setItem("countries",result.countries);
+					sessionStorage.setItem("role",result.role);
+					window.location.href="index.html";
+				},
+				error : function() {
+					alert("异常！");
+				}
+			});
+		}
+	}
+</script>
+
+</head>
+
+<body>
+	<div class="header">
+		<div class="k1">
+			<a href="/" class="logo">
+				<h1>山东金三利信息技术有限公司</h1>
+			</a>
+		</div>
+	</div>
+	<script type="text/javascript"></script>
+	<div class="main main_bg1 main_bg2">
+		<div class="k1">
+			<div class="login r">
+				<ul class="hd" id="hd">
+					<li class="on">普通登录</li>
+					<!-- <li>手机动态登录</li> -->
+				</ul>
+				<ul class="bd" id="bd">
+					<li style="display: block;">
+						<form id="formLogin" name="formLogin" method="post">
+							<input type="text" class="tex" placeholder="用户名" name="userName" />
+							<input type="password" class="tex tex2" placeholder="密码"
+								name="password" />
+							<div class="forgive">
+								<label class="l"> <input type="checkbox" class="che"
+									value="1" name="remember" id="remember" /> 自动登录
+								</label>
+								<!-- <a href="user.php?act=forgot" class="a2 r">忘记密码?</a> -->
+							</div>
+							<div class="clear"></div>
+
+							<input class="but" type="button" onclick="login()" value="登     录" />
+						</form> <!--                         <p class="p2">
+                            <a href="#p">免费注册</a>丨
+                            <a href="#">忘记密码</a>
+                        </p> -->
+					</li>
+					<li>2</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<p>Copyright©2015 山东金三利信息技术有限公司</p>
+	</div>
+</body>
+</html>
