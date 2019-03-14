@@ -16,10 +16,6 @@ public class Info {
 	//关联的企业ID
 	private int enterpriseId;
 	
-	
-	
-	
-
 	public int getId() {
 		return id;
 	}
@@ -53,5 +49,22 @@ public class Info {
 	}
 	
 	
+
+
+
+	
+	/**
+	 * 关联Enterprise表
+	 */
+	private Enterprise enterprise;
+	
+	
+	public Enterprise getEnterprise() {
+		return enterprise;
+	}
+
+	public void setEnterprise(Enterprise enterprise) {
+		this.enterprise = enterprise;
+	}
 
 }

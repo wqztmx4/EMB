@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
-import com.jsl.emb.bean.Enterprise;
 import com.jsl.emb.bean.Info;
+import com.jsl.emb.dao.EnterpriseDAO;
 import com.jsl.emb.dao.InfoDAO;
 
-public class InfoPublicServlet extends HttpServlet {
+public class InfoManageServlet extends HttpServlet {
 
 	/**
 	 * 
@@ -26,12 +26,14 @@ public class InfoPublicServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	InfoDAO infoDAO = new InfoDAO();
+	EnterpriseDAO dao = new EnterpriseDAO();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		doPost(req, resp);
 	}
+	
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -66,25 +68,32 @@ public class InfoPublicServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+	private int remove(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+		/*String ids = req.getParameter("remove_ids");
+		return dao.remove(ids);*/
+		return 0;
 
-	private int remove(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
-		return 1;
 	}
 
 	private int edit(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-		Info info = new Info();
+		/*Info info = new Info();
 		info.setId(Integer.parseInt(req.getParameter("id")));
 		info.setPublicContent(req.getParameter("publicContent"));
-		return infoDAO.edit(info);
+		return infoDAO.edit(info);*/
+		return 0;
 	}
 
 	private int add(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-		Info info = new Info();
+		/*Info info = new Info();
 		info.setEnterpriseId(Integer.parseInt(req.getParameter("enterpriseId")));
 		info.setPublicContent(req.getParameter("publicContent"));
 		info.setPublicDate(new java.sql.Date(new java.util.Date().getTime()));
-		return infoDAO.add(info);
+		return infoDAO.add(info);*/
+		return 0;
 	}
 
 	private List<Info> select(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -101,6 +110,15 @@ public class InfoPublicServlet extends HttpServlet {
 		if(req.getParameter("search_endDate")!=null&&req.getParameter("search_endDate")!=""){
 			map.put("search_endDate", req.getParameter("search_endDate"));
 		}
+		if(req.getParameter("search_enterpriseType")!=null&&!req.getParameter("search_enterpriseType").equals("")){
+			map.put("enterpriseType", req.getParameter("search_enterpriseType"));
+		}
+		if(req.getParameter("search_countries")!=null&&!req.getParameter("search_countries").equals("")){
+			map.put("countries", req.getParameter("search_countries"));
+		}
+		if(req.getParameter("search_enterpriseName")!=null&&!req.getParameter("search_enterpriseName").equals("")){
+			map.put("enterpriseName", req.getParameter("search_enterpriseName"));
+		}
 		try {
 			return infoDAO.select(map);
 		} catch (IllegalArgumentException e) {
@@ -108,5 +126,6 @@ public class InfoPublicServlet extends HttpServlet {
 		};
 		return null;		
 	}
+
 
 }

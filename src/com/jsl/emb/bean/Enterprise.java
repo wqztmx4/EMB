@@ -1,5 +1,7 @@
 package com.jsl.emb.bean;
 
+import java.util.ArrayList;
+
 public class Enterprise {
 	
 	//企业ID
@@ -79,6 +81,18 @@ public class Enterprise {
 	}
 	
 	
+
+	/**
+	 * 与info表关联
+	 */
+	private ArrayList<Info> infos;
 	
+	public ArrayList<Info> getInfos() {
+		return infos;
+	}
+	public void setInfos(ArrayList<Info> infos) {
+		this.infos = infos;
+	}
+
 
 }

@@ -367,7 +367,10 @@
 		fit:true,
 		columns:[[
 			{ checkbox:true},
-			{ field:'id',title:'编号',width:100,sortable:true},
+			{ field:'index',title:'序号',width:100,sortable:true,formatter: function(value,row,index){
+				return index+1;
+			}},
+			{ field:'id',title:'编号',width:100,sortable:true,hidden:true},
 			{ field:'enterpriseName',title:'企业名称',width:100,sortable:true},
 			{ field:'enterpriseType',title:'企业类型',width:100,formatter:function (value, row , index){
 				switch (row.enterpriseType) {
@@ -452,7 +455,6 @@
 				$('#enterpriseManage-form').form('load', data.rows[0])
 			}	
 		});
-		
 	}
 	});
 

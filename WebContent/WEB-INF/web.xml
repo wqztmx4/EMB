@@ -65,6 +65,16 @@
   	<url-pattern>/infoPublic</url-pattern>
   </servlet-mapping>
   
+  <!-- 信息管理Servlet -->
+  <servlet>
+  	<servlet-name>InfoManageServlet</servlet-name>
+  	<servlet-class>com.jsl.emb.servlet.InfoManageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>InfoManageServlet</servlet-name>
+  	<url-pattern>/infoManage</url-pattern>
+  </servlet-mapping>
+  
   
   <welcome-file-list>
     <welcome-file>login.html</welcome-file>

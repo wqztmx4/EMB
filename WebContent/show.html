@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>潍坊市危化品信息公示系统</title>
+<link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/icon.css" />
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="easyui/1.3.4/jquery.easyui.min.js"></script>
+</head>
+<body>
+	<div style="height: 100px"><h1>标题</h1></div>
+	<div style="height: 50px"><h1>各县市区发送信息展示</h1></div>
+	<div style="height: 500px">
+	<table id="show-datagrid" class="easyui-datagrid"></table>
+	</div>
+	<script type="text/javascript">
+	
+	/**
+	 * Name 分页过滤器
+	 */
+	function pagerFilter(data) {
+		if (typeof data.length == 'number' && typeof data.splice == 'function') {// is array                
+			data = {
+				total : data.length,
+				rows : data
+			}
+		}
+		var dg = $(this);
+		var opts = dg.datagrid('options');
+		var pager = dg.datagrid('getPager');
+		pager.pagination({
+			onSelectPage : function(pageNum, pageSize) {
+				opts.pageNumber = pageNum;
+				opts.pageSize = pageSize;
+				pager.pagination('refresh', {
+					pageNumber : pageNum,
+					pageSize : pageSize
+				});
+				dg.datagrid('loadData', data);
+			}
+		});
+		if (!data.originalRows) {
+			data.originalRows = (data.rows);
+		}
+		var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+		var end = start + parseInt(opts.pageSize);
+		data.rows = (data.originalRows.slice(start, end));
+		return data;
+	}
+	
+	
+	
+	/**
+	 * Name 载入数据
+	 */
+	$('#show-datagrid').datagrid({
+		url : 'infoManage?method=select',
+		loadFilter : pagerFilter,
+		rownumbers : true,
+		singleSelect : false,
+		pageSize : 20,
+		pagination : true,
+		multiSort : true,
+		fitColumns : true,
+		fit : true,
+		columns : [ [ {
+			field : 'id',
+			title : '信息ID',
+			width : 30,
+			sortable : true,
+			hidden:true
+		}, {
+			field : 'enterpriseName',
+			title : '企业名称',
+			width : 100,
+			sortable : true,
+			formatter: function(value,row,index){
+				return row.enterprise.enterpriseName;
+			}
+		}, {
+			field : 'publicDate',
+			title : '发布时间',
+			width : 80,
+			formatter: function(value,row,index){
+				var date = new Date(row.publicDate);
+				date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+				return date;
+			}
+		},  {
+			field : 'publicContent',
+			title : '发布内容',
+			width : 280
+		}, {
+			field : 'enterpriseId',
+			title : '企业ID',
+			width : 30,
+			hidden:true,
+			formatter:function(value,row,index){
+				return row.enterprise.enterpriseId;
+			}
+		}]],
+		onDblClickRow: function(rowIndex, rowData){
+			$('#infoManage-form').form('clear');
+			//alert(item.productid);return;
+			$.ajax({
+				url:'infoManage?method=select',
+				data:{
+					id:rowData.id
+				},
+				success:function(data){
+					if(data){
+						//对返回时间做处理
+						var date = new Date(data.rows[0].publicDate);
+						date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+						 $('#infoManage-form').form('load', 
+								 {
+							 		enterpriseName:data.rows[0].enterprise.enterpriseName,
+							 		publicDate:date,
+							 		acceptor:data.rows[0].enterprise.acceptor,
+							 	 	enterpriseType:data.rows[0].enterprise.enterpriseType,
+							 		countries:data.rows[0].enterprise.countries,
+							 		publicContent:data.rows[0].publicContent
+								 });
+					}
+					else{
+						$('#infoManage-dialog').dialog();
+					} 
+				}	
+			});
+			$('#infoManage-dialog').dialog({
+				closed: false,
+				modal:true,
+	            title: "查看信息"
+	        });
+		}
+	});
+	</script>
+</body>
+</html>
