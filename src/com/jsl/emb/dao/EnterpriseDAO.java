@@ -104,7 +104,7 @@ public class EnterpriseDAO {
 		while (iterator.hasNext()) {
 		String pl_sql="";
 		Map.Entry<String, String> entry = iterator.next();
-		if(entry.getKey().equals("search_enterpriseName")){
+		if(entry.getKey().equals("enterpriseName")){
 			pl_sql = " and "+entry.getKey()+" like %"+entry.getValue()+"%";
 		}else{
 			pl_sql = " and "+entry.getKey()+"="+entry.getValue();

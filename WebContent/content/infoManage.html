@@ -5,8 +5,8 @@
 			<!-- <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">新增</a> 
 			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a> 
 			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a> -->
-			<a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="cancel()" plain="true">查看</a> 
-			<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">导入</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView_infoManage()" plain="true">查看</a> 
+<!-- 			<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="import_infoManage()" plain="true">导入</a> -->
 			<!-- <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>
@@ -23,16 +23,16 @@
 			<label>结束时间：</label>
 			<input id="search_endDate" class="easyui-datebox" style="width: 100px"> 
 				<label>企 业 类 型：</label> 
-				<select id="search_enterpriseType" class="easyui-combobox" panelHeight="auto" style="width: 100px">
+				<select id="search_enterpriseType" class="easyui-combobox"  style="width:100px">
 					<option value="">全部类型</option>
 					<option value="101">危化品使用</option>
 					<option value="102">危化品经营</option>
 					<option value="103">危化品生产</option>
 				</select> 
 			<label>企 业 名 称：</label>
-			<input id = "search_enterpriseName" class="wu-text" style="width: 100px">
+			<input id = "search_enterpriseName" class="wu-text" style="width:100px">
 			<label>县 区：</label> 
-			<select id="search_countries" class="easyui-combobox" panelHeight="auto" style="width: 100px">
+			<select id="search_countries" class="easyui-combobox"  style="width:100px">
 				<option value="">所有区县</option>
 				<option value="1">市直</option>
 				<option value="2">青州</option>
@@ -47,7 +47,7 @@
 		</div>
 	</div>
 	<!-- End of toolbar -->
-	<table id="infoManage-datagrid" class="easyui-datagrid" toolbar="#wu-toolbar-2"></table>
+	<table id="infoManage-datagrid" class="easyui-datagrid" style="width: 100%"></table>
 </div>
 <!-- Begin of easyui-dialog -->
 <div id="infoManage-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width: 700px; padding: 10px;">
@@ -100,15 +100,75 @@
 		</table>
 	</form>
 </div>
+
+
+<div id="dd" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width: 700px; padding: 10px;">
+    <input class="easyui-filebox" data-options="buttonText:'选择',prompt:'请选择文件...'" style="width:300px">
+</div>
 <!-- End of easyui-dialog -->
 <script type="text/javascript">
+
+/**
+* Name 打开查看窗口
+*/
+function openView_infoManage(){
+	$('#infoManage-form').form('clear');
+	var item = $('#infoManage-datagrid').datagrid('getSelected');
+	//alert(item.productid);return;
+	$.ajax({
+		url:'infoPublic?method=select',
+		data:{
+			id:item.id
+		},
+		success:function(data){
+			 if(data){
+				//对返回时间做处理
+					var date = new Date(data.rows[0].publicDate);
+					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+					 $('#infoManage-form').form('load', 
+							 {
+						 		enterpriseName:data.rows[0].enterprise.enterpriseName,
+						 		publicDate:date,
+						 		acceptor:data.rows[0].enterprise.acceptor,
+						 	 	enterpriseType:data.rows[0].enterprise.enterpriseType,
+						 		countries:data.rows[0].enterprise.countries,
+						 		publicContent:data.rows[0].publicContent
+							 });
+			}
+			else{
+				$('#infoManage-dialog').dialog();
+			} 
+		}	
+	});
+	$('#infoManage-dialog').dialog({
+		closed: false,
+		modal:true,
+        title: "查看信息"
+    });
+}
+
+
+/**
+ * 信息管理中的导入，可导入所有已发信息
+ */
+	function import_infoManage(){
+	$('#dd').dialog({
+		closed: false,
+		modal:true,
+        title: "查看信息"
+    });
+}
+
+
+
 	function searchInfoManage(){
 	
 		  $.ajax({
 				url:'infoManage?method=select',
+				type:"POST",
 				data:{
-					search_startDate:$('#search_startDate').val(),
-					search_endDate:$('#search_endDate').val(),
+					search_startDate:$('#search_startDate').datebox('getValue'),
+					search_endDate:$('#search_endDate').datebox('getValue'),
 					search_enterpriseType:$('#search_enterpriseType').combobox('getValue'),
 					search_countries:$('#search_countries').combobox('getValue'),
 					search_enterpriseName:$('#search_enterpriseName').val()
@@ -116,7 +176,7 @@
 				success:function(data){
 						 $('#infoManage-datagrid').datagrid('loadData',data);
 				}	
-			});
+			}); 
 			
 	}
 
@@ -159,6 +219,7 @@
 	$('#infoManage-datagrid').datagrid({
 		url : 'infoManage?method=select',
 		loadFilter : pagerFilter,
+		toolbar:'#infoManage-toolbar',
 		rownumbers : true,
 		singleSelect : false,
 		pageSize : 20,

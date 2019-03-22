@@ -1,10 +1,10 @@
 <div class="easyui-layout" data-options="fit:true">
     <!-- Begin of toolbar -->
-    <div id="infopublic-toolbar">
+    <div id="infoPublic-toolbar">
         <div class="wu-toolbar-button">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">新增</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView()" plain="true">查看</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd_infoPublic()" plain="true">新增</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit_infoPublic()" plain="true">修改</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView_infoPublic()" plain="true">查看</a>
            <!--  <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="doPublic()" plain="true">发布</a> -->
             <!--<a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="reload()" plain="true">刷新</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <!-- End of toolbar -->
-    <table id="infoPublic-datagrid" class="easyui-datagrid" toolbar="#infopublic-toolbar"></table>
+    <table id="infoPublic-datagrid" class="easyui-datagrid" ></table>
 </div>
 
 
@@ -105,7 +105,7 @@
 	/**
 	* Name 打开添加窗口
 	*/
-	function openAdd(){
+	function openAdd_infoPublic(){
 		$('#infoPublic-form').form('clear');
 		$('#infoPublic-dialog').dialog({
 			closed: false,
@@ -128,7 +128,7 @@
 	/**
 	* Name 打开修改窗口
 	*/
-	function openEdit(){
+	function openEdit_infoPublic(){
 		$('#infoPublic-form').form('clear');
 		var item = $('#infoPublic-datagrid').datagrid('getSelected');
 		//alert(item.productid);return;
@@ -180,7 +180,7 @@
 	/**
 	* Name 打开查看窗口
 	*/
-	function openView(){
+	function openView_infoPublic(){
 		$('#infoPublic-form').form('clear');
 		var item = $('#infoPublic-datagrid').datagrid('getSelected');
 		//alert(item.productid);return;
@@ -243,7 +243,8 @@
 		queryParams: {
 			enterpriseId:sessionStorage.getItem("id") 
 		},
-		loadFilter:pagerFilter,		
+		loadFilter:pagerFilter,	
+		toolbar:'#infoPublic-toolbar',
 		rownumbers:true,
 		singleSelect:false,
 		pageSize:20,           

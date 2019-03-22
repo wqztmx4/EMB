@@ -105,10 +105,10 @@ public class InfoManageServlet extends HttpServlet {
 			map.put("enterpriseId", req.getParameter("enterpriseId"));
 		}
 		if(req.getParameter("search_startDate")!=null&&req.getParameter("search_startDate")!=""){
-			map.put("search_startDate", req.getParameter("search_startDate"));
+			map.put("startDate", req.getParameter("search_startDate"));
 		}
 		if(req.getParameter("search_endDate")!=null&&req.getParameter("search_endDate")!=""){
-			map.put("search_endDate", req.getParameter("search_endDate"));
+			map.put("endDate", req.getParameter("search_endDate"));
 		}
 		if(req.getParameter("search_enterpriseType")!=null&&!req.getParameter("search_enterpriseType").equals("")){
 			map.put("enterpriseType", req.getParameter("search_enterpriseType"));

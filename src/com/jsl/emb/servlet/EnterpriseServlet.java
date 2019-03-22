@@ -56,6 +56,8 @@ public class EnterpriseServlet extends HttpServlet {
 				out.println("{\"changedNum\":"+edit(req, resp)+"}");
 			} else if (method.equals("remove")) {
 				out.println("{\"changedNum\":"+remove(req, resp)+"}");
+			} else if (method.equals("changePassword")) {
+				out.println("{\"changedNum\":"+changePassword(req, resp)+"}");
 			} else {
 
 			}
@@ -65,6 +67,16 @@ public class EnterpriseServlet extends HttpServlet {
 	}
 
 	
+	
+	private int changePassword(HttpServletRequest req, HttpServletResponse resp) {
+		String id = req.getParameter("id");
+		String oldPassword = req.getParameter("oldPassword");
+		String newPassword = req.getParameter("newPassword");
+		String confirmPassword = req.getParameter("confirmPassword");
+		dao.changePassword(String oldPassword,)
+		return 1;
+	}
+
 	private List<Enterprise> select(HttpServletRequest req, HttpServletResponse resp) {
 		
 		Map<String, String> map = new HashMap<String, String>();

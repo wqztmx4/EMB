@@ -5,16 +5,264 @@
 <title>潍坊市危化品信息公示系统</title>
 <link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="css/tabs.css" />
 <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="easyui/1.3.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/prefixfree.js"></script>
+<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script>
 </head>
 <body>
-	<div style="height: 100px"><h1>标题</h1></div>
-	<div style="height: 50px"><h1>各县市区发送信息展示</h1></div>
-	<div style="height: 500px">
-	<table id="show-datagrid" class="easyui-datagrid"></table>
+	<div style="height: 100px"><h1>潍坊市危化品信息公示系统</h1></div>
+	
+	<div class="easyui-panel" style="padding:10px; height: 30px;">
+		<a style="margin-right: 10px;margin-left: 30px;"  href="#" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">市直<span id = "1" style="margin-left: 3px"></span></a>
+		<a style="margin-right: 10px;" href="list.html?c=1" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">青州<span id = "2" style="margin-left: 3px"></span></a>
+		<a style="margin-right: 10px;" href="list.html?c=2" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">寿光<span  id = "3" style="margin-left: 3px"></span></a>
+		<a style="margin-right: 10px;" href="list.html?c=3" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">诸城<span  id = "4" style="margin-left: 3px"></span></a>
+		<a style="margin-right: 10px;" href="list.html?c=4" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">高密<span  id = "5" style="margin-left: 3px"></span></a>
+		<a style="margin-right: 10px;" href="list.html?c=5" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">昌邑<span  id = "6" style="margin-left: 3px"></span></a>
+		<a style="margin-right: 10px;" href="list.html?c=6" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">临朐<span  id = "7" style="margin-left: 3px"></span></a>
+		<a style="margin-right: 10px;" href="list.html?c=7" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">昌乐<span  id = "8" style="margin-left: 3px"></span></a>
 	</div>
+
+    <div style="height: 500px;width: 80%; ">
+      	<input id="tab1" type="radio" name="tabs" checked onclick="a()">
+  	  	<label for="tab1">危化品使用</label>
+
+  		<input id="tab2" type="radio" name="tabs" onclick="b()">
+  		<label for="tab2">危化品经营</label>
+
+  		<input id="tab3" type="radio" name="tabs" onclick="c()">
+  		<label for="tab3">危化品生产</label>
+
+  	<section id="content1">
+   		<div style="height: 500px">
+   	    	<table id="show-datagrid1" class="easyui-datagrid"></table>
+   	    </div>
+  	</section>
+
+  	<section id="content2">
+   	 	<div style="height: 500px">
+   	    	<table id="show-datagrid2" class="easyui-datagrid"></table>
+   	    </div>
+  	</section>
+
+  	<section id="content3">
+   		<div style="height: 500px">
+   	    	<table id="show-datagrid3" class="easyui-datagrid"></table>
+   	    </div>
+  	</section>
+
+    </div>
+
 	<script type="text/javascript">
+	function a(){
+		/**
+		 * Name 载入数据
+		 */
+		$('#show-datagrid1').datagrid({
+			url : 'data/101.json',
+			loadFilter : pagerFilter,
+			rownumbers : true,
+			singleSelect : false,
+			pageSize : 20,
+			pagination : true,
+			multiSort : true,
+			fitColumns : true,
+			fit : true,
+			columns : [ [ {
+				field : 'id',
+				title : '信息ID',
+				width : 30,
+				sortable : true,
+				hidden:true
+			}, {
+				field : 'enterpriseName',
+				title : '企业名称',
+				width : 100,
+				sortable : true,
+				formatter: function(value,row,index){
+					return row.enterprise.enterpriseName;
+				}
+			}, {
+				field : 'publicDate',
+				title : '发布时间',
+				width : 80,
+				formatter: function(value,row,index){
+					var date = new Date(row.publicDate);
+					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+					return date;
+				}
+			},  {
+				field : 'publicContent',
+				title : '发布内容',
+				width : 280
+			}, {
+				field : 'enterpriseId',
+				title : '企业ID',
+				width : 30,
+				hidden:true,
+				formatter:function(value,row,index){
+					return row.enterprise.enterpriseId;
+				}
+			}]],
+			onDblClickRow: function(rowIndex, rowData){
+				$('#infoManage-form').form('clear');
+				//alert(item.productid);return;
+				$.ajax({
+					url:'infoManage?method=select',
+					data:{
+						id:rowData.id
+					},
+					success:function(data){
+						if(data){
+							//对返回时间做处理
+							var date = new Date(data.rows[0].publicDate);
+							date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+							 $('#infoManage-form').form('load', 
+									 {
+								 		enterpriseName:data.rows[0].enterprise.enterpriseName,
+								 		publicDate:date,
+								 		acceptor:data.rows[0].enterprise.acceptor,
+								 	 	enterpriseType:data.rows[0].enterprise.enterpriseType,
+								 		countries:data.rows[0].enterprise.countries,
+								 		publicContent:data.rows[0].publicContent
+									 });
+						}
+						else{
+							$('#infoManage-dialog').dialog();
+						} 
+					}	
+				});
+				$('#infoManage-dialog').dialog({
+					closed: false,
+					modal:true,
+		            title: "查看信息"
+		        });
+			}
+		});
+	}
+	
+	function b(){
+		$('#show-datagrid2').datagrid({
+			url : 'data/102.json',
+			loadFilter : pagerFilter,
+			rownumbers : true,
+			singleSelect : false,
+			pageSize : 20,
+			pagination : true,
+			multiSort : true,
+			fitColumns : true,
+			fit : true,
+			columns : [ [ {
+				field : 'id',
+				title : '信息ID',
+				width : 30,
+				sortable : true,
+				hidden:true
+			}, {
+				field : 'enterpriseName',
+				title : '企业名称',
+				width : 100,
+				sortable : true,
+				formatter: function(value,row,index){
+					return row.enterprise.enterpriseName;
+				}
+			}, {
+				field : 'publicDate',
+				title : '发布时间',
+				width : 80,
+				formatter: function(value,row,index){
+					var date = new Date(row.publicDate);
+					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+					return date;
+				}
+			},  {
+				field : 'publicContent',
+				title : '发布内容',
+				width : 280,
+				formatter:function(value,row,index){
+					var abValue = value;
+			        if (value.length>=63) {
+			            abValue = value.substring(0,60) + "...";
+			        }
+			        var content = '<span title="' + value + '" class="note">' + abValue + '</span>';
+			        return content;
+				}
+			}, {
+				field : 'enterpriseId',
+				title : '企业ID',
+				width : 30,
+				hidden:true,
+				formatter:function(value,row,index){
+					return row.enterprise.enterpriseId;
+				}
+			}]],
+			onLoadSuccess: function(data){
+				$(".note").tooltip({
+					position:'bottom',
+					onShow: function(){
+				    	$(this).tooltip('tip').css({
+				        	width:'400',
+				            boxShadow: '1px 1px 3px #292929'
+				        });
+				     }
+				});
+			}
+		});
+	}
+	
+
+	
+	function c(){
+		$('#show-datagrid3').datagrid({
+			url : 'data/103.json',
+			loadFilter : pagerFilter,
+			rownumbers : true,
+			singleSelect : false,
+			pageSize : 20,
+			pagination : true,
+			multiSort : true,
+			fitColumns : true,
+			fit : true,
+			columns : [ [ {
+				field : 'id',
+				title : '信息ID',
+				width : 30,
+				sortable : true,
+				hidden:true
+			}, {
+				field : 'enterpriseName',
+				title : '企业名称',
+				width : 100,
+				sortable : true,
+				formatter: function(value,row,index){
+					return row.enterprise.enterpriseName;
+				}
+			}, {
+				field : 'publicDate',
+				title : '发布时间',
+				width : 80,
+				formatter: function(value,row,index){
+					var date = new Date(row.publicDate);
+					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+					return date;
+				}
+			},  {
+				field : 'publicContent',
+				title : '发布内容',
+				width : 280
+			}, {
+				field : 'enterpriseId',
+				title : '企业ID',
+				width : 30,
+				hidden:true,
+				formatter:function(value,row,index){
+					return row.enterprise.enterpriseId;
+				}
+			}]]
+		});
+	}
 	
 	/**
 	 * Name 分页过滤器
@@ -49,92 +297,37 @@
 		return data;
 	}
 	
+	a();
+	
+	function JSONLength(obj,key,value) {		 
+		var size = 0;
+		$.each(obj,function(i, item) {
+			if (item[key]==value) size++;
+		});	 
+		return size;		 
+		};
+
 	
 	
-	/**
-	 * Name 载入数据
-	 */
-	$('#show-datagrid').datagrid({
-		url : 'infoManage?method=select',
-		loadFilter : pagerFilter,
-		rownumbers : true,
-		singleSelect : false,
-		pageSize : 20,
-		pagination : true,
-		multiSort : true,
-		fitColumns : true,
-		fit : true,
-		columns : [ [ {
-			field : 'id',
-			title : '信息ID',
-			width : 30,
-			sortable : true,
-			hidden:true
-		}, {
-			field : 'enterpriseName',
-			title : '企业名称',
-			width : 100,
-			sortable : true,
-			formatter: function(value,row,index){
-				return row.enterprise.enterpriseName;
+ 	$(document).ready(function (){
+		$.ajax({
+			url:"data/a.json",
+			type:"GET",
+			dataType:"json",
+			success:function(data){
+				$('#1').text(JSONLength(data,"countries","1"));
+				$('#2').text(JSONLength(data,"countries","2"));
+				$('#3').text(JSONLength(data,"countries","3"));
+				$('#4').text(JSONLength(data,"countries","4"));
+				$('#5').text(JSONLength(data,"countries","5"));
+				$('#6').text(JSONLength(data,"countries","6"));
+				$('#7').text(JSONLength(data,"countries","7"));
+				$('#8').text(JSONLength(data,"countries","8"));
 			}
-		}, {
-			field : 'publicDate',
-			title : '发布时间',
-			width : 80,
-			formatter: function(value,row,index){
-				var date = new Date(row.publicDate);
-				date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-				return date;
-			}
-		},  {
-			field : 'publicContent',
-			title : '发布内容',
-			width : 280
-		}, {
-			field : 'enterpriseId',
-			title : '企业ID',
-			width : 30,
-			hidden:true,
-			formatter:function(value,row,index){
-				return row.enterprise.enterpriseId;
-			}
-		}]],
-		onDblClickRow: function(rowIndex, rowData){
-			$('#infoManage-form').form('clear');
-			//alert(item.productid);return;
-			$.ajax({
-				url:'infoManage?method=select',
-				data:{
-					id:rowData.id
-				},
-				success:function(data){
-					if(data){
-						//对返回时间做处理
-						var date = new Date(data.rows[0].publicDate);
-						date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-						 $('#infoManage-form').form('load', 
-								 {
-							 		enterpriseName:data.rows[0].enterprise.enterpriseName,
-							 		publicDate:date,
-							 		acceptor:data.rows[0].enterprise.acceptor,
-							 	 	enterpriseType:data.rows[0].enterprise.enterpriseType,
-							 		countries:data.rows[0].enterprise.countries,
-							 		publicContent:data.rows[0].publicContent
-								 });
-					}
-					else{
-						$('#infoManage-dialog').dialog();
-					} 
-				}	
-			});
-			$('#infoManage-dialog').dialog({
-				closed: false,
-				modal:true,
-	            title: "查看信息"
-	        });
-		}
-	});
+		});	
+	}); 
+	
+
 	</script>
 </body>
 </html>

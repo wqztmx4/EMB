@@ -19,8 +19,8 @@
         	<h1>潍坊市危化品信息公示系统</h1>
         </div>
         <div class="wu-header-right">
-        	<p><strong id = "loginName" class="easyui-tooltip" title="2条未读消息"></strong>，欢迎您！</p>
-            <p>技术支持：山东金三利信息技术有限公司  &nbsp&nbsp&nbsp&nbsp&nbsp联系方式：</p>
+        	<p><strong id = "loginName" class="easyui-tooltip"></strong>，欢迎您！</p>
+            <p><a href="#" onclick="open_ChangePassword()"> 密码修改        </a><a href="#" onclick="exit()">退出系统</a></p>
         </div>
     </div>
     <!-- end of header -->
@@ -38,66 +38,39 @@
             </div> -->
             <div title="内容发布" data-options="iconCls:'icon-application-form-edit'" style="padding:5px;">  	
     			<ul id = "contentPublic" class="easyui-tree wu-side-tree">
-                   <li iconCls="icon-book"><a id="infoPublic" href="javascript:void(0)" data-icon="icon-book" data-link="content/infopublic.html" iframe="0">公告信息发布</a></li>
-                </ul>
+                   <li iconCls="icon-book"><a id="infoPublic" href="javascript:void(0)" data-icon="icon-book" data-link="content/infoPublic.html" iframe="0">公告信息发布</a></li>
+              	</ul>
     			<ul id = "contentManage" class="easyui-tree wu-side-tree">
                     <li iconCls="icon-users"><a  href="javascript:void(0)" data-icon="icon-users" data-link="content/enterpriseManage.html" iframe="0">企业信息管理</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="content/infoManage.html" iframe="0">公告信息管理</a></li>
+                    <li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="content/infoManage.html" iframe="0">公告信息管理</a></li>
                 </ul>
             </div>
-            <!-- <div title="商品管理" data-options="iconCls:'icon-creditcards'" style="padding:5px;">  	
-    			<ul class="easyui-tree wu-side-tree">
-                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-users"><a href="javascript:void(0)" data-icon="icon-users" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-book"><a href="javascript:void(0)" data-icon="icon-book" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-cog" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                </ul>
-            </div> -->
-           <!--  <div title="订单管理" data-options="iconCls:'icon-cart'" style="padding:5px;">  	
-    			<ul class="easyui-tree wu-side-tree">
-                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-users"><a href="javascript:void(0)" data-icon="icon-users" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-book"><a href="javascript:void(0)" data-icon="icon-book" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-cog" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                </ul>
-            </div> -->
-           <!--  <div title="广告管理" data-options="iconCls:'icon-bricks'" style="padding:5px;">  	
-    			<ul class="easyui-tree wu-side-tree">
-                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-users"><a href="javascript:void(0)" data-icon="icon-users" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-book"><a href="javascript:void(0)" data-icon="icon-book" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-cog" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                </ul>
-            </div> -->
-            <!-- <div title="报表中心" data-options="iconCls:'icon-chart-curve'" style="padding:5px;">  	
-    			<ul class="easyui-tree wu-side-tree">
-                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-users"><a href="javascript:void(0)" data-icon="icon-users" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-book"><a href="javascript:void(0)" data-icon="icon-book" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-cog" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                </ul>
-            </div> -->
-<!--             <div title="系统设置" data-options="iconCls:'icon-wrench'" style="padding:5px;">  	
-    			<ul class="easyui-tree wu-side-tree">
-                	<li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-users"><a href="javascript:void(0)" data-icon="icon-users" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-user-group"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-book"><a href="javascript:void(0)" data-icon="icon-book" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-cog" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                    <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
-                </ul>
-            </div> -->
         </div>
     </div>	
-    <!-- end of sidebar -->    
+    <!-- end of sidebar --> 
+    
+    <!-- Begin of easyui-dialog -->
+<div id="changePassword-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width:700px; padding:10px;">
+	<form id="changePassword-form" method="post">
+        <table>
+           <tr>
+                <td width="80" align="right">原 密 码:</td>
+                <td><input id = "oldPassword" type="password" name="oldPassword" class="wu-text" /></td>
+            </tr>
+            <tr>
+                <td align="right">新 密 码:</td>
+                <td><input id = "newPassword" type="password" name="newPassword" class="wu-text" /></td>
+            </tr>
+            <tr>
+                <td width="80" align="right">密 码 确 认:</td>
+                <td><input id = "confirmPassword" type="password" name="confirmPassword" class="wu-text" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!-- End of easyui-dialog -->
+
+   
     <!-- begin of main -->
     <div class="wu-main" data-options="region:'center'">
         <div id="wu-tabs" class="easyui-tabs" data-options="border:false,fit:true">  
@@ -158,10 +131,10 @@
 		* Param iconCls 图标样式
 		* Param iframe 链接跳转方式（true为iframe，false为href）
 		*/	
-		function addTab(title, href, iconCls, iframe){
+		function addTab(title, way, iconCls, iframe){
 			var tabPanel = $('#wu-tabs');
 			if(!tabPanel.tabs('exists',title)){
-				var content = '<iframe scrolling="auto" frameborder="0"  src="'+ href +'" style="width:100%;height:100%;"></iframe>';
+				var content = '<iframe scrolling="auto" frameborder="0"  src="'+ way +'" style="width:100%;height:100%;"></iframe>';
 				if(iframe){
 					tabPanel.tabs('add',{
 						title:title,
@@ -175,7 +148,7 @@
 				else{
 					tabPanel.tabs('add',{
 						title:title,
-						href:href,
+						href:way,
 						iconCls:iconCls,
 						fit:true,
 						cls:'pd3',
@@ -200,6 +173,64 @@
 			}
 		}
 		
+		//退出系统
+		function exit(){
+			sessionStorage.clear();
+			window.location.href="login.html";
+		}
+		
+		function changePassword(){
+			$('#changePassword-form').form('submit', {
+				url:'enterprise?method=changePassword',
+				onSubmit: function(param){
+						param.enterpriseId = sessionStorage.getItem("id");
+						if($('#confirmPassword').val()==$('#newPassword').val()&&$('#oldPassword').val()!=""&&$('#oldPassword').val()!=null&&$('#newPassword').val()!=""&&$('#newPassword').val()!=null){
+							return true;
+						}else if($('#confirmPassword').val()!=$('#newPassword').val()){
+							$.messager.alert('警告','新密码与确认密码不一致');
+							return false;
+						}else{
+							$.messager.alert('警告','输入有误');
+							return false;
+						}
+				},
+				success:function(data){
+					var data = eval('(' + data + ')');
+					if(data.changedNum>0){
+						$.messager.alert('信息提示','密码修改成功！','info');
+						$('#changePassword-dialog').dialog('close');
+					}
+					else
+					{
+						$.messager.alert('信息提示','密码修改失败！','info');
+					}
+				}
+			});
+		}
+		
+		//密码修改
+		function open_ChangePassword(){
+			$('#changePassword-form').form('clear');
+			$('#changePassword-dialog').dialog({
+				closed: false,
+				modal:true,
+	            title: "密码修改",
+	            buttons: [{
+	                text: '提交',
+	                iconCls: 'icon-ok',
+	                handler: changePassword
+	            }, {
+	                text: '取消',
+	                iconCls: 'icon-cancel',
+	                handler: function () {
+	                    $('#changePassword-dialog').dialog('close');                
+	                }
+	            }]
+	        });
+			
+		}
+		
+		
 		
 		 $(document).ready(function() { 
 				var enterpriseName = sessionStorage.getItem("enterpriseName");
@@ -207,6 +238,7 @@
 				var role = Number(sessionStorage.getItem("role"));
 				$("#contentManage").hide();
 				if(Number(role)==1){
+					$("#contentPublic").hide();
 					$("#contentManage").show();
 				}
 			})

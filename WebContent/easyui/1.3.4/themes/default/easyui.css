@@ -1050,6 +1050,7 @@ a:hover.l-btn-plain-selected {
   padding: 0;
   overflow: auto;
   zoom: 1;
+  font-size:16px;
 }
 .datagrid-view1 .datagrid-body-inner {
   padding-bottom: 20px;

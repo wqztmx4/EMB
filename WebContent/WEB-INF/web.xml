@@ -75,6 +75,16 @@
   	<url-pattern>/infoManage</url-pattern>
   </servlet-mapping>
   
+    <!-- 输出JSONServlet -->
+  <servlet>
+  	<servlet-name>OutJsonFileServlet</servlet-name>
+  	<servlet-class>com.jsl.emb.servlet.OutJsonFileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>OutJsonFileServlet</servlet-name>
+  	<url-pattern>/outJsonFile</url-pattern>
+  </servlet-mapping>
+  
   
   <welcome-file-list>
     <welcome-file>login.html</welcome-file>

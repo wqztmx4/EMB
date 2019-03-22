@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +42,12 @@ public class InfoDAO {
 		Map.Entry<String, String> entry = iterator.next();
 		if (entry.getKey().equals("id")) {
 			pl_sql = " and a."+entry.getKey()+" = "+entry.getValue();
-		}else if(entry.getKey().equals("search_startDate")){
-			pl_sql = " and "+entry.getKey()+" > "+entry.getValue();
-		}else if(entry.getKey().equals("search_endDate")){
-			pl_sql = " and "+entry.getKey()+" < "+entry.getValue();
-		}else if(entry.getKey().equals("search_enterpriseName")){
-			pl_sql = " and "+entry.getKey()+" like %"+entry.getValue()+"%";
+		}else if(entry.getKey().equals("startDate")){
+			pl_sql = " and publicDate >= '"+entry.getValue()+"'";
+		}else if(entry.getKey().equals("endDate")){
+			pl_sql = " and publicDate <= '"+entry.getValue()+"'";
+		}else if(entry.getKey().equals("enterpriseName")){
+			pl_sql = " and "+entry.getKey()+" like '%"+entry.getValue()+"%'";
 		}else{
 			pl_sql = " and "+entry.getKey()+"="+entry.getValue();
 		}
@@ -82,5 +84,30 @@ public class InfoDAO {
 	}
 	
 
+	/**
+	 *查询当天未发布信息的单位 
+	 * 	
+	 * @return
+	 * @throws SQLException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws InstantiationException
+	 */
+	public List<Enterprise> selectUnpublicEnterprise() throws SQLException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		List<Enterprise> enterprises = new ArrayList<Enterprise>();
+		Connection connection = DBConnection.getConnection();
+		String sql = "select a.id,enterpriseName,countries from enterprise a left join  info b on a.id = b.enterpriseId and b.publicDate=? where b.publicContent is  null and countries is not null";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setString(1, new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			Enterprise enterprise = (Enterprise)BeanUtil.autoBean(Enterprise.class, resultSet);
+			enterprises.add(enterprise);
+		}
+		preparedStatement.close();
+		connection.close();
+		return enterprises;
+	}
 
 }

@@ -2,11 +2,11 @@
 	<!-- Begin of toolbar -->
 	<div id="enterpriseManage-toolbar">
 		<div class="wu-toolbar-button">
-			<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">新增</a> 
-			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a> 
-			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a> 
-			<a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView()" plain="true">查看</a> 
-			<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="importData()"plain="true">导入</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd_enterprise()" plain="true">新增</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit_enterprise()" plain="true">修改</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove_enterprise()" plain="true">删除</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView_enterprise()" plain="true">查看</a> 
+	<!-- 		<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="importData_enterprise()"plain="true">导入</a> -->
 			<!--  <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>
@@ -40,11 +40,11 @@
 				<option value="9">昌乐</option>
 			</select> 
 			<label> 企业名称：</label><input id="search_enterpriseName" class="wu-text" style="width: 100px"> 
-			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchInfo()">开始检索</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchInfo_enterprise()">开始检索</a>
 		</div>
 	</div>
 	<!-- End of toolbar -->
-	<table id="enterpriseManage-datagrid" class="easyui-datagrid" toolbar="#enterpriseManage-toolbar"></table>
+	<table id="enterpriseManage-datagrid" class="easyui-datagrid" ></table>
 </div>
 <!-- Begin of easyui-dialog -->
 <div id="enterpriseManage-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width: 700px; padding: 10px;">
@@ -197,7 +197,7 @@
 	/**
 	* Name 打开添加窗口
 	*/
-	function openAdd(){
+	function openAdd_enterprise(){
 		$('#enterpriseManage-form').form('clear');
 		$('#enterpriseManage-dialog').dialog({
 			closed: false,
@@ -220,7 +220,7 @@
 	/**
 	* Name 打开修改窗口
 	*/
-	function openEdit(){
+	function openEdit_enterprise(){
 		$('#enterpriseManage-form').form('clear');
 		var item = $('#enterpriseManage-datagrid').datagrid('getSelected');
 		//alert(item.productid);return;
@@ -258,7 +258,7 @@
 	/**
 	* Name 打开查看窗口
 	*/
-	function openView(){
+	function openView_enterprise(){
 		$('#enterpriseManage-form').form('clear');
 		var item = $('#enterpriseManage-datagrid').datagrid('getSelected');
 		//alert(item.productid);return;
@@ -287,7 +287,7 @@
 	/**
 	* function:导入数据，xls或xlsx格式的数据
 	*/
-	function importData(){
+	function importData_enterprise(){
 		$('#uploadFile-dialog').dialog('open');
 		/* $('#uploadFile-form').form('submit', {
 			url:'',
@@ -307,7 +307,7 @@
 	/**
 	* function:控制查询功能
 	*/
-	function searchInfo(){
+	function searchInfo_enterprise(){
 		 $.ajax({
 			url:'enterprise?method=select',
 			data:{
@@ -357,7 +357,8 @@
 	*/
  	$('#enterpriseManage-datagrid').datagrid({
 		url:'enterprise?method=select',
-		loadFilter:pagerFilter,		
+		loadFilter:pagerFilter,	
+		toolbar:'#enterpriseManage-toolbar',
 		rownumbers:true,
 		singleSelect:false,
 		pageSize:20,           
