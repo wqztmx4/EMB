@@ -168,7 +168,7 @@ $.fn.pagination.defaults={total:1,pageSize:10,pageNumber:1,pageList:[10,20,30,50
 },onBeforeRefresh:function(_24,_25){
 },onRefresh:function(_26,_27){
 },onChangePageSize:function(_28){
-},beforePageText:"Page",afterPageText:"of {pages}",displayMsg:"Displaying {from} to {to} of {total} items",nav:{first:{iconCls:"pagination-first",handler:function(){
+},beforePageText:"第",afterPageText:"{pages} 页",displayMsg:"展示 {from} 到 {to} 第 {total} 条数据",nav:{first:{iconCls:"pagination-first",handler:function(){
 var _29=$(this).pagination("options");
 if(_29.pageNumber>1){
 $(this).pagination("select",1);

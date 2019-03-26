@@ -12,12 +12,12 @@
 <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script>
 </head>
 <body>
-	<div style="height: 100px;margin-bottom: 10px;">
-		<!-- <img alt="" src="images/aj-logoNew1.png"> -->
-		<h1>潍坊市危化品企业安全承诺公告</h1>
+	<div style="height: 180px">
+	<!-- <img alt="" src="images/aj-logoNew1.png"> -->
+	<h1>潍坊市危化品企业安全承诺公告</h1>
 	</div>
 	
-	<div class="easyui-panel" title= "今日未公示企业数量" style="padding:10px; height: 50px;margin-bottom:10px;">
+	<div class="easyui-panel" title= "今日未公示企业数量" style="padding:10px; height: 50px;margin-bottom:20px;">
 		<a style="margin-right: 10px;" href="list.html?c=2" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">青州市<span id = "2" style="margin-left: 3px"></span></a>
 		<a style="margin-right: 10px;" href="list.html?c=3" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">诸城市<span  id = "3" style="margin-left: 3px"></span></a>
 		<a style="margin-right: 10px;" href="list.html?c=4" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">寿光市<span  id = "4" style="margin-left: 3px"></span></a>
@@ -36,43 +36,13 @@
 		<a style="margin-right: 10px;" href="list.html?c=17" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">经济区<span  id = "17" style="margin-left: 3px"></span></a>
 	</div>
 
-    <div style="height: 500px;width: 100%;margin-left :auto;margin-right: auto;margin-top: 10px; ">
-      	<input id="tab1" type="radio" name="tabs" checked onclick="a()">
-  	  	<label for="tab1">危化品使用</label>
-
-  		<input id="tab2" type="radio" name="tabs" onclick="b()">
-  		<label for="tab2">危化品经营</label>
-
-  		<input id="tab3" type="radio" name="tabs" onclick="c()">
-  		<label for="tab3">危化品生产</label>
-
-  	<section id="content1">
-   		<div style="height: 500px">
+	<div style="height:500px;">
    	    	<table id="show-datagrid1" class="easyui-datagrid"></table>
-   	    </div>
-  	</section>
-
-  	<section id="content2">
-   	 	<div style="height: 500px">
-   	    	<table id="show-datagrid2" class="easyui-datagrid"></table>
-   	    </div>
-  	</section>
-
-  	<section id="content3">
-   		<div style="height: 500px">
-   	    	<table id="show-datagrid3" class="easyui-datagrid"></table>
-   	    </div>
-  	</section>
-
-    </div>
+ 	</div>
 
 	<script type="text/javascript">
-	function a(){
-		/**
-		 * Name 载入数据
-		 */
 		$('#show-datagrid1').datagrid({
-			url : 'data/101.json',
+			url : 'data/a.json',
 			loadFilter : pagerFilter,
 			rownumbers : true,
 			singleSelect : false,
@@ -89,116 +59,11 @@
 				hidden:true
 			}, {
 				field : 'enterpriseName',
-				title : '企业名称',
+				title : '未公示企业名称',
 				width : 100,
 				sortable : true,
 				formatter: function(value,row,index){
-					return row.enterprise.enterpriseName;
-				}
-			}, {
-				field : 'publicDate',
-				title : '发布时间',
-				width : 80,
-				formatter: function(value,row,index){
-					var date = new Date(row.publicDate);
-					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-					return date;
-				}
-			},  {
-				field : 'publicContent',
-				title : '发布内容',
-				width : 280
-			}, {
-				field : 'enterpriseId',
-				title : '企业ID',
-				width : 30,
-				hidden:true,
-				formatter:function(value,row,index){
-					return row.enterprise.enterpriseId;
-				}
-			}]],
-			onDblClickRow: function(rowIndex, rowData){
-				$('#infoManage-form').form('clear');
-				//alert(item.productid);return;
-				$.ajax({
-					url:'infoManage?method=select',
-					data:{
-						id:rowData.id
-					},
-					success:function(data){
-						if(data){
-							//对返回时间做处理
-							var date = new Date(data.rows[0].publicDate);
-							date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-							 $('#infoManage-form').form('load', 
-									 {
-								 		enterpriseName:data.rows[0].enterprise.enterpriseName,
-								 		publicDate:date,
-								 		acceptor:data.rows[0].enterprise.acceptor,
-								 	 	enterpriseType:data.rows[0].enterprise.enterpriseType,
-								 		countries:data.rows[0].enterprise.countries,
-								 		publicContent:data.rows[0].publicContent
-									 });
-						}
-						else{
-							$('#infoManage-dialog').dialog();
-						} 
-					}	
-				});
-				$('#infoManage-dialog').dialog({
-					closed: false,
-					modal:true,
-		            title: "查看信息"
-		        });
-			}
-		});
-	}
-	
-	function b(){
-		$('#show-datagrid2').datagrid({
-			url : 'data/102.json',
-			loadFilter : pagerFilter,
-			rownumbers : true,
-			singleSelect : false,
-			pageSize : 20,
-			pagination : true,
-			multiSort : true,
-			fitColumns : true,
-			fit : true,
-			columns : [ [ {
-				field : 'id',
-				title : '信息ID',
-				width : 30,
-				sortable : true,
-				hidden:true
-			}, {
-				field : 'enterpriseName',
-				title : '企业名称',
-				width : 100,
-				sortable : true,
-				formatter: function(value,row,index){
-					return row.enterprise.enterpriseName;
-				}
-			}, {
-				field : 'publicDate',
-				title : '发布时间',
-				width : 80,
-				formatter: function(value,row,index){
-					var date = new Date(row.publicDate);
-					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-					return date;
-				}
-			},  {
-				field : 'publicContent',
-				title : '发布内容',
-				width : 280,
-				formatter:function(value,row,index){
-					var abValue = value;
-			        if (value.length>=63) {
-			            abValue = value.substring(0,60) + "...";
-			        }
-			        var content = '<span title="' + value + '" class="note">' + abValue + '</span>';
-			        return content;
+						return row.enterpriseName;
 				}
 			}, {
 				field : 'enterpriseId',
@@ -206,79 +71,29 @@
 				width : 30,
 				hidden:true,
 				formatter:function(value,row,index){
-					return row.enterprise.enterpriseId;
-				}
-			}]],
-			onLoadSuccess: function(data){
-				$(".note").tooltip({
-					position:'bottom',
-					onShow: function(){
-				    	$(this).tooltip('tip').css({
-				        	width:'400',
-				            boxShadow: '1px 1px 3px #292929'
-				        });
-				     }
-				});
-			}
-		});
-	}
-	
-
-	
-	function c(){
-		$('#show-datagrid3').datagrid({
-			url : 'data/103.json',
-			loadFilter : pagerFilter,
-			rownumbers : true,
-			singleSelect : false,
-			pageSize : 20,
-			pagination : true,
-			multiSort : true,
-			fitColumns : true,
-			fit : true,
-			columns : [ [ {
-				field : 'id',
-				title : '信息ID',
-				width : 30,
-				sortable : true,
-				hidden:true
-			}, {
-				field : 'enterpriseName',
-				title : '企业名称',
-				width : 100,
-				sortable : true,
-				formatter: function(value,row,index){
-					return row.enterprise.enterpriseName;
-				}
-			}, {
-				field : 'publicDate',
-				title : '发布时间',
-				width : 80,
-				formatter: function(value,row,index){
-					var date = new Date(row.publicDate);
-					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-					return date;
-				}
-			},  {
-				field : 'publicContent',
-				title : '发布内容',
-				width : 280
-			}, {
-				field : 'enterpriseId',
-				title : '企业ID',
-				width : 30,
-				hidden:true,
-				formatter:function(value,row,index){
-					return row.enterprise.enterpriseId;
+					return row.id;
 				}
 			}]]
 		});
-	}
 	
+	
+		function filterByCountries(data){
+			var datas = [];
+			var q = window.location.search.split("=")[1];
+			for(var i = 0 ; i < data.length ; i++){
+				if(data[i].countries==q){
+					datas.push(data[i]);
+				}
+			}
+			return datas;
+		}
+		
+
 	/**
 	 * Name 分页过滤器
 	 */
 	function pagerFilter(data) {
+		data = filterByCountries(data);
 		if (typeof data.length == 'number' && typeof data.splice == 'function') {// is array                
 			data = {
 				total : data.length,
@@ -308,7 +123,7 @@
 		return data;
 	}
 	
-	a();
+	
 	
 	function JSONLength(obj,key,value) {		 
 		var size = 0;

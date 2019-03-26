@@ -85,6 +85,10 @@
   	<url-pattern>/outJsonFile</url-pattern>
   </servlet-mapping>
   
+  <listener>
+  	<listener-class>com.jsl.emb.util.TimedTask</listener-class>
+  </listener>
+  
   
   <welcome-file-list>
     <welcome-file>login.html</welcome-file>

@@ -105,7 +105,7 @@ public class EnterpriseDAO {
 		String pl_sql="";
 		Map.Entry<String, String> entry = iterator.next();
 		if(entry.getKey().equals("enterpriseName")){
-			pl_sql = " and "+entry.getKey()+" like %"+entry.getValue()+"%";
+			pl_sql = " and "+entry.getKey()+" like '%"+entry.getValue()+"%'";
 		}else{
 			pl_sql = " and "+entry.getKey()+"="+entry.getValue();
 		}
@@ -121,6 +121,41 @@ public class EnterpriseDAO {
 		preparedStatement.close();
 		connection.close();
 		return enterprises;
+	}
+
+
+	/**
+	 * 根据对象中的信息判断，输入原密码是否正确，若正确，则根据新参数修改密码
+	 * @param enterprise
+	 * @param newPassword
+	 * @return
+	 * @throws SQLException 
+	 */
+	public int changePassword(Enterprise enterprise, String newPassword) throws SQLException{
+		Connection connection = DBConnection.getConnection();
+		String sql_select = "select password from enterprise where id = ?";
+		PreparedStatement preparedStatement;
+		preparedStatement = connection.prepareStatement(sql_select);
+		preparedStatement.setInt(1, enterprise.getId());
+		ResultSet resultSet  =  preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			if(resultSet.getString("password").equals(enterprise.getPassword())){
+				resultSet.close();
+				preparedStatement.close();
+				String sql_update = "update enterprise set password = ? where id = ?";
+				PreparedStatement preparedStatement2 = connection.prepareStatement(sql_update);
+				preparedStatement2.setString(1, newPassword);
+				preparedStatement2.setInt(2, enterprise.getId());
+				int num = preparedStatement2.executeUpdate();
+				preparedStatement2.close();
+				connection.close();
+				return num;
+			}
+		}
+		resultSet.close();
+		preparedStatement.close();
+		connection.close();
+		return 0;
 	}
 	
 

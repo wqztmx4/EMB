@@ -68,13 +68,12 @@ public class EnterpriseServlet extends HttpServlet {
 
 	
 	
-	private int changePassword(HttpServletRequest req, HttpServletResponse resp) {
-		String id = req.getParameter("id");
-		String oldPassword = req.getParameter("oldPassword");
+	private int changePassword(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+		Enterprise enterprise = new Enterprise();
+		enterprise.setId(Integer.parseInt(req.getParameter("enterpriseId")));
+		enterprise.setPassword(req.getParameter("oldPassword"));
 		String newPassword = req.getParameter("newPassword");
-		String confirmPassword = req.getParameter("confirmPassword");
-		dao.changePassword(String oldPassword,)
-		return 1;
+		return dao.changePassword(enterprise,newPassword);
 	}
 
 	private List<Enterprise> select(HttpServletRequest req, HttpServletResponse resp) {
