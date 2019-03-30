@@ -3,47 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <title>潍坊市危化品信息公示系统</title>
-<link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/icon.css" />
+<link rel="stylesheet" type="text/css"
+	href="easyui/1.3.4/themes/default/easyui.css" />
+<link rel="stylesheet" type="text/css"
+	href="easyui/1.3.4/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="css/tabs.css" />
 <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="easyui/1.3.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="js/prefixfree.js"></script>
-<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script>
+<script type="text/javascript"
+	src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script>
 </head>
 <body>
-	<div style="height: 180px">
-	<!-- <img alt="" src="images/aj-logoNew1.png"> -->
-	<h1>潍坊市危化品企业安全承诺公告</h1>
-	</div>
-	
-	<div class="easyui-panel" title= "今日未公示企业数量" style="padding:10px; height: 50px;margin-bottom:20px;">
-		<a style="margin-right: 10px;" href="list.html?c=2" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">青州市<span id = "2" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=3" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">诸城市<span  id = "3" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=4" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">寿光市<span  id = "4" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=5" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">安丘市<span  id = "5" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=6" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">高密市<span  id = "6" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=7" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">昌邑市<span  id = "7" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=8" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">临朐县<span  id = "8" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=9" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">昌乐县<span  id = "9" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=10" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">奎文区<span  id = "10" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=11" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">潍城区<span  id = "11" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=12" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">寒亭区<span  id = "12" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=13" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">坊子区<span  id = "13" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=14" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">高新区<span  id = "14" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=15" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">滨海区<span  id = "15" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=16" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">峡山区<span  id = "16" style="margin-left: 3px"></span></a>
-		<a style="margin-right: 10px;" href="list.html?c=17" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">经济区<span  id = "17" style="margin-left: 3px"></span></a>
+	<div style="height: 100px">
+		<!-- <img alt="" src="images/aj-logoNew1.png"> -->
+		<h1>潍坊市危化品企业安全承诺公告</h1>
 	</div>
 
-	<div style="height:500px;">
-   	    	<table id="show-datagrid1" class="easyui-datagrid"></table>
- 	</div>
+	<div class="easyui-panel" title="今日未公示企业数量"
+		style="padding: 10px; height: 50px; margin-bottom: 20px;">
+		<a style="margin-right: 10px;" href="list.html?c=2" target="_blank"
+			class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">青州市<span id="2" style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=3" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">诸城市<span id="3"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=4"  target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">寿光市<span id="4"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=5" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">安丘市<span id="5"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=6"  target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">高密市<span id="6"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=7" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">昌邑市<span id="7"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=8" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">临朐县<span id="8"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=9" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">昌乐县<span id="9"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=10" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">奎文区<span id="10"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=11" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">潍城区<span id="11"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=12" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">寒亭区<span id="12"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=13" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">坊子区<span id="13"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=14" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">高新区<span id="14"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=15" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">滨海区<span id="15"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=16" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">峡山区<span id="16"
+			style="margin-left: 3px"></span></a> 
+			<a style="margin-right: 10px;"
+			href="list.html?c=17" target="_blank" class="easyui-linkbutton"
+			data-options="toggle:true,group:'g2',plain:true">经济区<span id="17"
+			style="margin-left: 3px"></span></a>
+	</div>
+
+	<div style="height: 500px;">
+		<table id="show-datagrid1" ></table>
+	</div>
 
 	<script type="text/javascript">
+	
 		$('#show-datagrid1').datagrid({
-			url : 'data/a.json',
-			loadFilter : pagerFilter,
+			url:'data/a.json',
+			loadFilter:pagerFilter,
 			rownumbers : true,
 			singleSelect : false,
 			pageSize : 20,
@@ -76,24 +127,26 @@
 			}]]
 		});
 	
-	
 		function filterByCountries(data){
-			var datas = [];
+			var datas = new Array(0);	
 			var q = window.location.search.split("=")[1];
-			for(var i = 0 ; i < data.length ; i++){
-				if(data[i].countries==q){
-					datas.push(data[i]);
+			for(var i = 0 ; i < data.total; i++){
+				if(data.rows[i].countries==q){
+					datas.push(data.rows[i]);
 				}
 			}
 			return datas;
-		}
+			}
 		
-
+	var isFirst=true;
 	/**
 	 * Name 分页过滤器
 	 */
 	function pagerFilter(data) {
-		data = filterByCountries(data);
+		if(isFirst){
+			data = filterByCountries(data);
+			isFirst=false;
+		}
 		if (typeof data.length == 'number' && typeof data.splice == 'function') {// is array                
 			data = {
 				total : data.length,
@@ -127,7 +180,7 @@
 	
 	function JSONLength(obj,key,value) {		 
 		var size = 0;
-		$.each(obj,function(i, item) {
+		$.each(obj.rows,function(i, item) {
 			if (item[key]==value) size++;
 		});	 
 		return size;		 
@@ -160,6 +213,16 @@
 			}
 		});	
 	}); 
+ 	
+ 	
+ 	function writeObj(obj){ 
+ 		 var description = ""; 
+ 		 for(var i in obj){ 
+ 		 var property=obj[i]; 
+ 		 description+=i+" = "+property+"\n"; 
+ 		 } 
+ 		 alert(description); 
+ 		}
 	
 
 	</script>

@@ -42,7 +42,7 @@
 
 <!-- Begin of easyui-dialog -->
 <div id="infoPublic-dialog" class="easyui-dialog"
-	data-options="closed:true,iconCls:'icon-save'"
+	data-options="closed:true,iconCls:'icon-save',cache:false"
 	style="width: 700px; padding: 10px;">
 	<form id="infoPublic-form" method="post">
 		<table>
@@ -62,6 +62,8 @@
 		</table>
 	</form>
 </div>
+
+
 <!-- End of easyui-dialog -->
 <script type="text/javascript">
 	/**
@@ -79,13 +81,13 @@
 					$.messager.alert('信息提示', '已经超过提交时间', 'info');
 					return false;
 				}
-				
 			},
 			success : function(data) {
 				var data = eval('(' + data + ')');
 					$.messager.alert('信息提示', '提交成功！', 'info');
 				if (data.changedNum > 0) {
 					$('#infoPublic-dialog').dialog('close');
+					//$('#infoPublic-dialog').dialog('destory',true);
 					$('#infoPublic-datagrid').datagrid('reload');
 				} else {
 					$.messager.alert('信息提示', '提交失败！', 'info');
@@ -100,6 +102,15 @@
 	function edit(id) {
 		$('#infoPublic-form').form('submit', {
 			url : 'infoPublic?method=edit&id=' + id,
+			onSubmit : function(param) {
+				var date = new Date();
+				if(date.getHours()<10){
+					return true;
+				}else{
+					$.messager.alert('信息提示', '已经超过修改时间', 'info');
+					return false;
+				}
+			},
 			success : function(data) {
 				var data = eval('(' + data + ')');
 				if (data.changedNum > 0) {
@@ -142,7 +153,6 @@
 	function openEdit_infoPublic() {
 		$('#infoPublic-form').form('clear');
 		var item = $('#infoPublic-datagrid').datagrid('getSelected');
-		//alert(item.productid);return;
 		$.ajax({
 			url : 'infoPublic?method=select',
 			data : {
@@ -152,6 +162,7 @@
 				$('#infoPublic-dialog').dialog({
 					closed : false,
 					modal : true,
+					
 					title : "修改信息",
 					buttons : [ {
 						text : '保存',
@@ -163,7 +174,7 @@
 						text : '取消',
 						iconCls : 'icon-cancel',
 						handler : function() {
-							$('#infoPublic-dialog').dialog('close');
+							$('#infoPublic-dialog').dialog('destory',true);
 						}
 					} ]
 				});
@@ -172,6 +183,7 @@
 		});
 		$('#infoPublic-dialog').dialog({
 			closed : false,
+			
 			modal : true,
 			title : "修改信息",
 			buttons : [ {
@@ -182,7 +194,8 @@
 				text : '取消',
 				iconCls : 'icon-cancel',
 				handler : function() {
-					$('#infoPublic-dialog').dialog('close');
+					//$('#infoPublic-dialog').dialog('close');
+					$('#infoPublic-dialog').dialog('destory',true);
 				}
 			} ]
 		});
@@ -194,7 +207,6 @@
 	function openView_infoPublic() {
 		$('#infoPublic-form').form('clear');
 		var item = $('#infoPublic-datagrid').datagrid('getSelected');
-		//alert(item.productid);return;
 		$.ajax({
 			url : 'infoPublic?method=select',
 			data : {
@@ -211,7 +223,8 @@
 		$('#infoPublic-dialog').dialog({
 			closed : false,
 			modal : true,
-			title : "查看信息"
+			title : "查看信息",
+			buttons:[]
 		});
 	}
 
@@ -340,7 +353,8 @@
 							$('#infoPublic-dialog').dialog({
 								closed : false,
 								modal : true,
-								title : "查看信息"
+								title : "查看信息",
+								buttons:[]
 							});
 						}
 					});
