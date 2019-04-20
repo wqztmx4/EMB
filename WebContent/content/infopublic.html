@@ -21,9 +21,8 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a> -->
 		</div>
 		<div class="wu-toolbar-search">
-			<label>起始时间：</label><input id="search_startDate"
-				class="easyui-datebox" style="width: 100px"> <label>结束时间：</label><input
-				id="search_endDate" class="easyui-datebox" style="width: 100px">
+			<label>起始时间：</label><input id="search_startDate_ip" class="easyui-datebox" style="width: 100px"> 
+			<label>结束时间：</label><input id="search_endDate_ip" class="easyui-datebox" style="width: 100px">
 			<!-- <label>用户组：</label> 
             <select class="easyui-combobox" panelHeight="auto" style="width:100px">
                 <option value="0">选择用户组</option>
@@ -32,16 +31,20 @@
                 <option value="3">蓝钻</option>
             </select> -->
 			<!--  <label>关键词：</label><input id = "search_keyWord" class="wu-text" style="width:100px"> -->
-			<a href="#" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchInfoPublic()">开始检索</a>
 		</div>
 	</div>
-	<!-- End of toolbar -->
-	<table id="infoPublic-datagrid" class="easyui-datagrid"></table>
+	<div data-options="region:'center',split:true,title:''">
+		<table id="infoPublic-datagrid"></table>
+	</div>
 </div>
 
 
+
+
+
 <!-- Begin of easyui-dialog -->
-<div id="infoPublic-dialog" class="easyui-dialog"
+<div id="infoPublic-dialog" 
 	data-options="closed:true,iconCls:'icon-save',cache:false"
 	style="width: 700px; padding: 10px;">
 	<form id="infoPublic-form" method="post">
@@ -70,30 +73,36 @@
 	 * Name 添加记录
 	 */
 	function add() {
+		/* clearTimeout(timer);
+		timer = setTimeout(function() { */
 		$('#infoPublic-form').form('submit', {
 			url : 'infoPublic?method=add',
 			onSubmit : function(param) {
-				param.enterpriseId = sessionStorage.getItem("id");
+				param.enterpriseId = sessionStorage.getItem("enterpriseId");
 				var date = new Date();
+				//次数进行了时间限定
 				if(date.getHours()<10){
 					return true;
 				}else{
-					$.messager.alert('信息提示', '已经超过提交时间', 'info');
+					$.messager.alert('信息提示', '请于每日10点前提交信息', 'info');
 					return false;
 				}
 			},
 			success : function(data) {
 				var data = eval('(' + data + ')');
+				if (data.changedNum == 1) {
 					$.messager.alert('信息提示', '提交成功！', 'info');
-				if (data.changedNum > 0) {
 					$('#infoPublic-dialog').dialog('close');
-					//$('#infoPublic-dialog').dialog('destory',true);
 					$('#infoPublic-datagrid').datagrid('reload');
-				} else {
+				}else if(data.changedNum == 8001){
+					$.messager.alert('信息提示', '每日只允许发布一次信息', 'info');
+				} 
+				else {
 					$.messager.alert('信息提示', '提交失败！', 'info');
 				}
 			}
 		});
+		/* },2000); */
 	}
 
 	/**
@@ -107,7 +116,7 @@
 				if(date.getHours()<10){
 					return true;
 				}else{
-					$.messager.alert('信息提示', '已经超过修改时间', 'info');
+					$.messager.alert('信息提示', '请于每日10点前进行修改', 'info');
 					return false;
 				}
 			},
@@ -183,7 +192,6 @@
 		});
 		$('#infoPublic-dialog').dialog({
 			closed : false,
-			
 			modal : true,
 			title : "修改信息",
 			buttons : [ {
@@ -229,6 +237,27 @@
 	}
 
 	/**
+	 * 根据检索条件，查询相关信息
+	 */
+		function searchInfoPublic(){
+		
+			  $.ajax({
+					url:'infoPublic?method=select',
+					type:"POST",
+					data:{
+						enterpriseId:sessionStorage.getItem("enterpriseId"),
+						search_startDate:$('#search_startDate_ip').datebox('getValue'),
+						search_endDate:$('#search_endDate_ip').datebox('getValue'),
+					},
+					success:function(data){
+							 $('#infoPublic-datagrid').datagrid('loadData',data);
+					}	
+				}); 
+				
+		}
+	
+	
+	/**
 	 * Name 分页过滤器
 	 */
 	function pagerFilter(data) {
@@ -264,98 +293,110 @@
 	/**
 	 * Name 载入数据
 	 */
-	$('#infoPublic-datagrid')
-			.datagrid(
-					{
-						url : 'infoPublic?method=select',
-						queryParams : {
-							enterpriseId : sessionStorage.getItem("id")
-						},
-						loadFilter : pagerFilter,
-						toolbar : '#infoPublic-toolbar',
-						rownumbers : true,
-						singleSelect : false,
-						pageSize : 20,
-						pagination : true,
-						multiSort : true,
-						fitColumns : true,
-						fit : true,
-						columns : [ [
-								{
-									checkbox : true
-								},
-								{
-									field : 'index',
-									title : '序号',
-									width : 40,
-									sortable : true,
-									formatter : function(value, row, index) {
-										return index + 1;
+     $(function(){
+        init();
+		function init(){
+		//延迟加载,否则页面请求两次
+		setTimeout(loadGrid, 200);
+		//loadGrid();
+	    }
+		function loadGrid(){
+		// 数据表格
+		$('#infoPublic-datagrid')
+				.datagrid(
+						{
+							url : 'infoPublic?method=select',
+							queryParams : {
+								enterpriseId : sessionStorage.getItem("enterpriseId")
+							},
+							loadFilter : pagerFilter,
+							toolbar : '#infoPublic-toolbar',
+							rownumbers : true,
+							singleSelect : false,
+							pageSize : 20,
+							pagination : true,
+							multiSort : true,
+							fitColumns : true,
+							fit : true,
+							columns : [ [
+									{
+										checkbox : true
+									},
+									{
+										field : 'index',
+										title : '序号',
+										width : 40,
+										sortable : true,
+										formatter : function(value, row, index) {
+											return index + 1;
+										}
+									},
+									{
+										field : 'id',
+										title : '信息ID',
+										width : 100,
+										hidden : true
+									},
+									{
+										field : 'enterpriseName',
+										title : '企业名称',
+										width : 100,
+										formatter : function(value, row, index) {
+											return sessionStorage
+													.getItem("enterpriseName");
+										}
+									},
+									{
+										field : 'publicDate',
+										title : '发布时间',
+										width : 100,
+										sortable : true,
+										formatter : function(value, row, index) {
+											var date = new Date(row.publicDate);
+											date = date.getFullYear() + "-"
+													+ (date.getMonth()+1) + "-"
+													+ date.getDate();
+											return date;
+										}
+									}, {
+										field : 'publicContent',
+										title : '发布内容',
+										width : 280
+									}, {
+										field : 'enterpriseId',
+										title : '企业ID',
+										width : 20,
+										hidden : true,
+										formatter : function(value, row, index) {
+											return sessionStorage.getItem("id");
+										}
+									} ] ],
+							onDblClickRow : function(rowIndex, rowData) {
+								$('#infoPublic-form').form('clear');
+								//alert(item.productid);return;
+								$.ajax({
+									url : 'infoPublic?method=select',
+									data : {
+										id : rowData.id
+									},
+									success : function(data) {
+										if (data) {
+											$('#infoPublic-form').form('load',
+													data.rows[0]);
+										} else {
+											$('#infoPublic-dialog').dialog();
+										}
 									}
-								},
-								{
-									field : 'id',
-									title : '信息ID',
-									width : 100,
-									hidden : true
-								},
-								{
-									field : 'enterpriseName',
-									title : '企业名称',
-									width : 100,
-									formatter : function(value, row, index) {
-										return sessionStorage
-												.getItem("enterpriseName");
-									}
-								},
-								{
-									field : 'publicDate',
-									title : '发布时间',
-									width : 100,
-									sortable : true,
-									formatter : function(value, row, index) {
-										var date = new Date(row.publicDate);
-										date = date.getFullYear() + "-"
-												+ date.getMonth() + "-"
-												+ date.getDate();
-										return date;
-									}
-								}, {
-									field : 'publicContent',
-									title : '发布内容',
-									width : 280
-								}, {
-									field : 'enterpriseId',
-									title : '企业ID',
-									width : 20,
-									hidden : true,
-									formatter : function(value, row, index) {
-										return sessionStorage.getItem("id");
-									}
-								} ] ],
-						onDblClickRow : function(rowIndex, rowData) {
-							$('#infoPublic-form').form('clear');
-							//alert(item.productid);return;
-							$.ajax({
-								url : 'infoPublic?method=select',
-								data : {
-									id : rowData.id
-								},
-								success : function(data) {
-									if (data) {
-										$('#infoPublic-form').form('load',
-												data.rows[0]);
-									} else {
-										$('#infoPublic-dialog').dialog();
-									}
-								}
-							});
-							$('#infoPublic-dialog').dialog({
-								closed : false,
-								modal : true,
-								title : "查看信息",
-								buttons:[]
-							});
-						}
-					});
+								}); 
+								$('#infoPublic-dialog').dialog({
+									closed : false,
+									modal : true,
+									title : "查看信息",
+									buttons:[]
+								});
+							}
+						});
+ }
+     });
+
 </script>

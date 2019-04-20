@@ -5,19 +5,26 @@
 <title>潍坊市危化品信息公示系统</title>
 <link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/icon.css" />
-<link rel="stylesheet" type="text/css" href="css/tabs.css" />
+<!-- <link rel="stylesheet" type="text/css" href="css/tabs.css" /> -->
 <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 <script type="text/javascript" src="easyui/1.3.4/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="js/prefixfree.js"></script>
-<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script>
+<script type="text/javascript" src="js/datagrid-detailview.js"></script>
+<style>
+.head{
+	height: 190px; 
+	width:100%;
+	background:url(images/header_wenzi_2.jpg) center no-repeat;   
+	margin-bottom: 10px;
+	background-size:cover;
+}
+</style>	
 </head>
 <body>
-	<div style="height: 100px;margin-bottom: 10px;">
-		<!-- <img alt="" src="images/aj-logoNew1.png"> -->
-		<h1>潍坊市危化品企业安全承诺公告</h1>
+	<div class="head">
+	<!-- <h1>潍坊市危险化学品安全风险研判与承诺公告</h1> -->
 	</div>
 	
-	<div class="easyui-panel" title= "今日未公示企业数量" style="padding:10px; height: 50px;margin-bottom:10px;">
+	<div class="easyui-panel" title= "今日未公示企业数量" style="padding:10px; height: 75px;margin-bottom:10px;">
 		<a style="margin-right: 10px;" href="list.html?c=2"  target="_blank" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">青州市<span id = "2" style="margin-left: 3px"></span></a>
 		<a style="margin-right: 10px;" href="list.html?c=3"  target="_blank" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">诸城市<span  id = "3" style="margin-left: 3px"></span></a>
 		<a style="margin-right: 10px;" href="list.html?c=4"  target="_blank" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">寿光市<span  id = "4" style="margin-left: 3px"></span></a>
@@ -36,15 +43,18 @@
 		<a style="margin-right: 10px;" href="list.html?c=17"  target="_blank" class="easyui-linkbutton" data-options="toggle:true,group:'g2',plain:true">经济区<span  id = "17" style="margin-left: 3px"></span></a>
 	</div>
 
-    <div style="height: 500px;width: 100%;margin-left :auto;margin-right: auto;margin-top: 10px; ">
-      	<input id="tab1" type="radio" name="tabs" checked onclick="a()">
+ <!--    <div style="height: 500px;width: 100%;margin-left :auto;margin-right: auto;margin-top: 10px; ">
+      	<input id="tab3" type="radio" name="tabs" checked onclick="c()">
+  		<label for="tab3">危化品生产</label>
+      	
+      	<input id="tab1" type="radio" name="tabs" onclick="a()">
   	  	<label for="tab1">危化品使用</label>
 
-  		<input id="tab2" type="radio" name="tabs" onclick="b()">
-  		<label for="tab2">危化品经营</label>
-
-  		<input id="tab3" type="radio" name="tabs" onclick="c()">
-  		<label for="tab3">危化品生产</label>
+  	<section id="content3">
+   		<div style="height: 500px">
+   	    	<table id="show-datagrid3" ></table>
+   	    </div>
+  	</section>	
 
   	<section id="content1">
    		<div style="height: 500px">
@@ -52,176 +62,84 @@
    	    </div>
   	</section>
 
-  	<section id="content2">
-   	 	<div style="height: 500px">
-   	    	<table id="show-datagrid2" ></table>
-   	    </div>
-  	</section>
+    </div> -->
+    
+   <div style="margin:5px 0;"></div>
+	<div class="easyui-tabs" data-options="tabWidth:180" style="width:100;height:630px;padding-bottom: 10px;">
+		<div title="危化品生产" style="padding:10px;font-size: 16px;">
+			<table id="show-datagrid3" style="margin-bottom: 10px;padding-bottom: 10px;"></table>
+		</div>
+		<div title="危化品使用" style="padding:10px;font-size: 16px;">
+			<table id="show-datagrid1" ></table>
+		</div>
 
-  	<section id="content3">
-   		<div style="height: 500px">
-   	    	<table id="show-datagrid3" ></table>
-   	    </div>
-  	</section>
-
-    </div>
+	</div>
 
 	<script type="text/javascript">
 	function a(){
 		/**
 		 * Name 载入数据
 		 */
-		$('#show-datagrid1').datagrid({
-			url : 'data/101.json',
-			loadFilter : pagerFilter,
-			rownumbers : true,
-			singleSelect : false,
-			pageSize : 20,
-			pagination : true,
-			multiSort : true,
-			fitColumns : true,
-			fit : true,
-			columns : [ [ {
-				field : 'id',
-				title : '信息ID',
-				width : 30,
-				sortable : true,
-				hidden:true
-			}, {
-				field : 'enterpriseName',
-				title : '企业名称',
-				width : 100,
-				sortable : true,
-				formatter: function(value,row,index){
-					return row.enterprise.enterpriseName;
+			$('#show-datagrid1').datagrid({
+				url : 'data/101.json',
+				loadFilter : pagerFilter,
+				rownumbers : true,
+				singleSelect : false,
+				pageSize : 20,
+				pagination : true,
+				multiSort : true,
+				fitColumns : true,
+				fit : true,
+				columns : [ [ {
+					field : 'id',
+					title : '信息ID',
+					width : 30,
+					sortable : true,
+					hidden:true
+				}, {
+					field : 'enterpriseName',
+					title : '企业名称',
+					width : 100,
+					sortable : true,
+					formatter: function(value,row,index){
+						return '<span style="font-size:16px">'+row.enterprise.enterpriseName+'</span>';
+					}
+				}, {
+					field : 'publicDate',
+					title : '发布时间',
+					width : 80,
+					formatter: function(value,row,index){
+						var date = new Date(row.publicDate);
+						date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+						return '<span style="font-size:16px">'+date+'</span>';
+					}
+				},  {
+					field : 'publicContent',
+					title : '发布内容',
+					width : 280,
+					formatter: function(value,row,index){
+						return '<span style="font-size:16px">'+row.publicContent+'</span>';
+					}
+				}, {
+					field : 'enterpriseId',
+					title : '企业ID',
+					width : 30,
+					hidden:true,
+					formatter:function(value,row,index){
+						return row.enterprise.enterpriseId;
+					}
+				}]],
+				view: detailview,
+				detailFormatter: function(rowIndex, rowData){
+					return '<table style="font-size:16px"><tr>' +
+							'<td style="border:0" style="width:10%;">' +
+							'发布内容:' +
+							'</td>' +
+							'<td style="width:90%;">' + rowData.publicContent + '</td>'+
+							'</tr></table>';
 				}
-			}, {
-				field : 'publicDate',
-				title : '发布时间',
-				width : 80,
-				formatter: function(value,row,index){
-					var date = new Date(row.publicDate);
-					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-					return date;
-				}
-			},  {
-				field : 'publicContent',
-				title : '发布内容',
-				width : 280
-			}, {
-				field : 'enterpriseId',
-				title : '企业ID',
-				width : 30,
-				hidden:true,
-				formatter:function(value,row,index){
-					return row.enterprise.enterpriseId;
-				}
-			}]],
-			onDblClickRow: function(rowIndex, rowData){
-				$('#infoManage-form').form('clear');
-				//alert(item.productid);return;
-				$.ajax({
-					url:'infoManage?method=select',
-					data:{
-						id:rowData.id
-					},
-					success:function(data){
-						if(data){
-							//对返回时间做处理
-							var date = new Date(data.rows[0].publicDate);
-							date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-							 $('#infoManage-form').form('load', 
-									 {
-								 		enterpriseName:data.rows[0].enterprise.enterpriseName,
-								 		publicDate:date,
-								 		acceptor:data.rows[0].enterprise.acceptor,
-								 	 	enterpriseType:data.rows[0].enterprise.enterpriseType,
-								 		countries:data.rows[0].enterprise.countries,
-								 		publicContent:data.rows[0].publicContent
-									 });
-						}
-						else{
-							$('#infoManage-dialog').dialog();
-						} 
-					}	
-				});
-				$('#infoManage-dialog').dialog({
-					closed: false,
-					modal:true,
-		            title: "查看信息"
-		        });
-			}
-		});
-	}
-	
-	function b(){
-		$('#show-datagrid2').datagrid({
-			url : 'data/102.json',
-			loadFilter : pagerFilter,
-			rownumbers : true,
-			singleSelect : false,
-			pageSize : 20,
-			pagination : true,
-			multiSort : true,
-			fitColumns : true,
-			fit : true,
-			columns : [ [ {
-				field : 'id',
-				title : '信息ID',
-				width : 30,
-				sortable : true,
-				hidden:true
-			}, {
-				field : 'enterpriseName',
-				title : '企业名称',
-				width : 100,
-				sortable : true,
-				formatter: function(value,row,index){
-					return row.enterprise.enterpriseName;
-				}
-			}, {
-				field : 'publicDate',
-				title : '发布时间',
-				width : 80,
-				formatter: function(value,row,index){
-					var date = new Date(row.publicDate);
-					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-					return date;
-				}
-			},  {
-				field : 'publicContent',
-				title : '发布内容',
-				width : 280,
-				formatter:function(value,row,index){
-					var abValue = value;
-			        if (value.length>=63) {
-			            abValue = value.substring(0,60) + "...";
-			        }
-			        var content = '<span title="' + value + '" class="note">' + abValue + '</span>';
-			        return content;
-				}
-			}, {
-				field : 'enterpriseId',
-				title : '企业ID',
-				width : 30,
-				hidden:true,
-				formatter:function(value,row,index){
-					return row.enterprise.enterpriseId;
-				}
-			}]],
-			onLoadSuccess: function(data){
-				$(".note").tooltip({
-					position:'bottom',
-					onShow: function(){
-				    	$(this).tooltip('tip').css({
-				        	width:'400',
-				            boxShadow: '1px 1px 3px #292929'
-				        });
-				     }
-				});
-			}
-		});
-	}
+			});
+		}
 	
 
 	
@@ -248,7 +166,7 @@
 				width : 100,
 				sortable : true,
 				formatter: function(value,row,index){
-					return row.enterprise.enterpriseName;
+					return '<span style="font-size:16px">'+row.enterprise.enterpriseName+'</span>';
 				}
 			}, {
 				field : 'publicDate',
@@ -256,13 +174,16 @@
 				width : 80,
 				formatter: function(value,row,index){
 					var date = new Date(row.publicDate);
-					date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
-					return date;
+					date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+					return '<span style="font-size:16px">'+date+'</span>';
 				}
 			},  {
 				field : 'publicContent',
 				title : '发布内容',
-				width : 280
+				width : 280,
+				formatter: function(value,row,index){
+					return '<span style="font-size:16px">'+row.publicContent+'</span>';
+				}
 			}, {
 				field : 'enterpriseId',
 				title : '企业ID',
@@ -271,44 +192,50 @@
 				formatter:function(value,row,index){
 					return row.enterprise.enterpriseId;
 				}
-			}]]
+			}]],
+			view: detailview,
+			detailFormatter: function(rowIndex, rowData){
+				return '<table style="font-size:16px"><tr>' +
+						'<td style="border:0" style="width:10%;">' +
+						'发布内容:' +
+						'</td>' +
+						'<td style="width:90%;">' + rowData.publicContent + '</td>'+
+						'</tr></table>';
+			}
 		});
 	}
 	
 	/**
-	 * Name 分页过滤器
-	 */
-	function pagerFilter(data) {
-		if (typeof data.length == 'number' && typeof data.splice == 'function') {// is array                
-			data = {
-				total : data.length,
-				rows : data
-			}
-		}
-		var dg = $(this);
-		var opts = dg.datagrid('options');
-		var pager = dg.datagrid('getPager');
-		pager.pagination({
-			onSelectPage : function(pageNum, pageSize) {
-				opts.pageNumber = pageNum;
-				opts.pageSize = pageSize;
-				pager.pagination('refresh', {
-					pageNumber : pageNum,
-					pageSize : pageSize
-				});
-				dg.datagrid('loadData', data);
-			}
-		});
-		if (!data.originalRows) {
-			data.originalRows = (data.rows);
-		}
-		var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
-		var end = start + parseInt(opts.pageSize);
-		data.rows = (data.originalRows.slice(start, end));
-		//writeObj(data);
-		return data;
+	* Name 分页过滤器
+	*/
+	function pagerFilter(data){            
+		if (typeof data.length == 'number' && typeof data.splice == 'function'){// is array                
+			data = {                   
+				total: data.length,                   
+				rows: data               
+			}            
+		}        
+		var dg = $(this);         
+		var opts = dg.datagrid('options');          
+		var pager = dg.datagrid('getPager');          
+		pager.pagination({                
+			onSelectPage:function(pageNum, pageSize){                 
+				opts.pageNumber = pageNum;                   
+				opts.pageSize = pageSize;                
+				pager.pagination('refresh',{pageNumber:pageNum,pageSize:pageSize});                  
+				dg.datagrid('loadData',data);                
+			}          
+		});           
+		if (!data.originalRows){               
+			data.originalRows = (data.rows);       
+		}         
+		var start = (opts.pageNumber-1)*parseInt(opts.pageSize);          
+		var end = start + parseInt(opts.pageSize);        
+		data.rows = (data.originalRows.slice(start, end));         
+		return data;       
 	}
 	
+	c();
 	a();
 	
 	function JSONLength(obj,key,value) {
@@ -346,6 +273,10 @@
 			}
 		});	
 	}); 
+ 	
+
+ 	$('.datagrid-header .datagrid-cell span ').css('font-size','16px');
+
 	
  	function writeObj(obj){ 
 		 var description = ""; 

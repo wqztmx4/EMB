@@ -45,6 +45,16 @@
   	<url-pattern>/infoManage</url-pattern>
   </servlet-mapping>
   
+   <!-- 信息统计Servlet -->
+  <servlet>
+  	<servlet-name>InfoStatisticsServlet</servlet-name>
+  	<servlet-class>com.jsl.emb.servlet.InfoStatisticsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>InfoStatisticsServlet</servlet-name>
+  	<url-pattern>/infoStatistics</url-pattern>
+  </servlet-mapping>
+  
     <!-- 输出JSONServlet -->
   <servlet>
   	<servlet-name>OutJsonFileServlet</servlet-name>
@@ -53,6 +63,31 @@
   <servlet-mapping>
   	<servlet-name>OutJsonFileServlet</servlet-name>
   	<url-pattern>/outJsonFile</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 配置Druid数据库监控-->
+  <servlet>
+      <servlet-name>DruidStatView</servlet-name>
+      <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+      <init-param>  
+    <!-- 允许清空统计数据 -->  
+    <param-name>resetEnable</param-name>  
+    <param-value>true</param-value>  
+    </init-param>  
+    <init-param>  
+    <!-- 用户名 -->  
+    <param-name>loginUsername</param-name>  
+    <param-value>admin</param-value>  
+    </init-param>  
+    <init-param>  
+    <!-- 密码 -->  
+    <param-name>loginPassword</param-name>  
+    <param-value>admin</param-value>  
+    </init-param>  
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>DruidStatView</servlet-name>
+      <url-pattern>/druid/*</url-pattern>
   </servlet-mapping>
   
   <listener>

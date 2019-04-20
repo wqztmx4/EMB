@@ -1,0 +1,260 @@
+<div class="easyui-layout" data-options="fit:true">
+	<!-- Begin of toolbar -->
+	<div id="infoStatistics-toolbar">
+		<div class="wu-toolbar-button">
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="queryUncomplianceEnterprise()" plain="true">上周发布不合规企业</a> 
+<!-- 			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView_infoManage()" plain="true">查看</a> 
+			<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="import_infoManage()" plain="true">导入</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-redo" onclick="cancel()" plain="true">重做</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="reload()" plain="true">总计</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>
+ -->		</div>
+		<div class="wu-toolbar-search">
+			<label>起始时间：</label>
+			<input id="search_startDate_is" class="easyui-datebox" style="width: 100px"> 
+			<label>结束时间：</label>
+			<input id="search_endDate_is" class="easyui-datebox" style="width: 100px"> 
+				<!-- <label>企 业 类 型：</label> 
+				<select id="search_enterpriseType_is" class="easyui-combobox"  style="width:100px">
+					<option value="">全部类型</option>
+					<option value="101">危化品使用</option>
+					<option value="102">危化品经营</option>
+					<option value="103">危化品生产</option>
+				</select>  -->
+			<!-- <label>企 业 名 称：</label>
+			<input id = "search_enterpriseName_is" class="wu-text" style="width:100px"> -->
+			<label>县 区：</label> 
+			<select id="search_countries_is" class="easyui-combobox"  style="width:100px">
+				<!-- <option value="">所有区县</option> -->
+				<option value="2">青州市</option>
+				<option value="3">诸城市</option>
+				<option value="4">寿光市</option>
+				<option value="5">安丘市</option>
+				<option value="6">高密市</option>
+				<option value="7">昌邑市</option>
+				<option value="8">临朐县</option>
+				<option value="9">昌乐县</option>
+				<option value="10">奎文区</option>
+				<option value="11">潍城区</option>
+				<option value="12">寒亭区</option>
+				<option value="13">坊子区</option>
+				<option value="14">高新区</option>
+				<option value="15">滨海区</option>
+				<option value="16">峡山区</option>
+				<option value="17">经济区</option>
+			</select>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchInfoStatistics()">开始检索</a>
+		</div>
+		</div >
+	<!-- End of toolbar -->
+	<div data-options="region:'center',split:true">
+		<table id="infoStatistics-datagrid"></table>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+/**
+ * 查询上周发布不合格的企业，即连续两天未发或一周三天未发布企业
+ */
+function queryUncomplianceEnterprise(){
+	alert('into queryUncomplianceEnterprise method......');
+}
+
+
+
+/**
+ * 根据检索条件，查询相关信息
+ */
+	function searchInfoStatistics(){
+		  $.ajax({
+				url:'infoStatistics?method=select',
+				type:"POST",
+				data:{
+					search_startDate:$('#search_startDate_is').datebox('getValue'),
+					search_endDate:$('#search_endDate_is').datebox('getValue'),
+					search_countries:$('#search_countries_is').combobox('getValue')
+					/* search_enterpriseType:$('#search_enterpriseType_is').combobox('getValue'),
+					search_enterpriseName:$('#search_enterpriseName_is').val() */
+				},
+				success:function(data){
+						$('#infoStatistics-datagrid').datagrid('loadData',data);
+				}	
+			}); 
+			
+	}
+
+	/**
+	 * Name 分页过滤器
+	 */
+	function pagerFilter(data) {
+		if (typeof data.length == 'number' && typeof data.splice == 'function') {// is array                
+			data = {
+				total : data.length,
+				rows : data
+			}
+		}
+		var dg = $(this);
+		var opts = dg.datagrid('options');
+		var pager = dg.datagrid('getPager');
+		pager.pagination({
+			onSelectPage : function(pageNum, pageSize) {
+				opts.pageNumber = pageNum;
+				opts.pageSize = pageSize;
+				pager.pagination('refresh', {
+					pageNumber : pageNum,
+					pageSize : pageSize
+				});
+				dg.datagrid('loadData', data);
+			}
+		});
+		if (!data.originalRows) {
+			data.originalRows = (data.rows);
+		}
+		var start = (opts.pageNumber - 1) * parseInt(opts.pageSize);
+		var end = start + parseInt(opts.pageSize);
+		data.rows = (data.originalRows.slice(start, end));
+		return data;
+	}
+
+	/**
+	 * Name 载入数据
+	 */
+	$('#infoStatistics-datagrid').datagrid({
+		url : '',
+		loadFilter : pagerFilter,
+		toolbar:'#infoStatistics-toolbar',
+		rownumbers : true,
+		singleSelect : false,
+		pageSize : 20,
+		pagination : true,
+		multiSort : true,
+		fitColumns : true,
+		fit : true,
+		columns : [ [ {
+			checkbox : true
+		},  {
+			field : 'id',
+			title : '信息ID',
+			width : 30,
+			sortable : true,
+			hidden:true
+		}, {
+			field : 'enterpriseName',
+			title : '企业名称',
+			width : 100,
+			sortable : true,
+			formatter: function(value,row,index){
+				return row.enterprise.enterpriseName;
+			}
+		}, {
+			field : 'publicDate',
+			title : '发布时间',
+			width : 80,
+			formatter: function(value,row,index){
+				var date = new Date(row.publicDate);
+				date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+				return date;
+			}
+		}, {
+			field : 'enterpriseType',
+			title : '企业类型',
+			width : 100,formatter:function (value, row , index){
+				switch (row.enterprise.enterpriseType) {
+				case '101':
+					return "危化品使用";
+					break;
+				case '102':
+					return "危化品经营";
+					break;
+				case '103':
+					return "危化品生产";
+					break;
+				default:
+					break;
+				}}
+		}, {
+			field : 'countries',
+			title : '县区',
+			width : 100,formatter:function(value,row,index){
+				switch (row.enterprise.countries) {
+				case 1:
+					return "市直";
+					break;
+				case 2:
+					return "青州市";
+					break;
+				case 3:
+					return "诸城市";
+					break;
+				case 4:
+					return "寿光市";
+					break;
+				case 5:
+					return "安丘市";
+					break;
+				case 6:
+					return "高密市";
+					break;
+				case 7:
+					return "昌邑市";
+					break;
+				case 8:
+					return "临朐市";
+					break;
+				case 9:
+					return "昌乐市";
+					break;
+				case 10:
+					return "奎文区";
+					break;
+				case 11:
+					return "潍城区";
+					break;
+				case 12:
+					return "寒亭区";
+					break;
+				case 13:
+					return "坊子区";
+					break;
+				case 14:
+					return "高新区";
+					break;
+				case 15:
+					return "滨海区";
+					break;
+				case 16:
+					return "峡山";
+					break;
+				case 17:
+					return "经济区";
+					break;
+				default:
+					return "";
+					break;
+				}
+				
+			}
+		}, {
+			field : 'publicContent',
+			title : '发布内容',
+			width : 280
+		}, {
+			field : 'enterpriseId',
+			title : '企业ID',
+			width : 30,
+			hidden:true,
+			formatter:function(value,row,index){
+				return row.enterprise.enterpriseId;
+			}
+		}]]
+	});
+</script>

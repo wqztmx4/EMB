@@ -14,12 +14,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jsl.emb.bean.Enterprise;
 import com.jsl.emb.dao.EnterpriseDAO;
+import com.jsl.emb.listener.MyServletContextListener;
 
 public class EnterpriseServlet extends HttpServlet {
+	
+	Logger logger= Logger.getLogger(EnterpriseServlet.class);
 	
 	EnterpriseDAO dao = new EnterpriseDAO();
 
@@ -62,7 +67,7 @@ public class EnterpriseServlet extends HttpServlet {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -91,18 +96,21 @@ public class EnterpriseServlet extends HttpServlet {
 		if(req.getParameter("search_enterpriseName")!=null&&!req.getParameter("search_enterpriseName").equals("")){
 			map.put("enterpriseName", req.getParameter("search_enterpriseName"));
 		}
+		if(req.getParameter("search_enterpriseStatus")!=null&&!req.getParameter("search_enterpriseStatus").equals("")){
+			map.put("enterpriseStatus", req.getParameter("search_enterpriseStatus"));
+		}
 		try {
 			return dao.select(map);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (InstantiationException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		};
 		return null;		
 	}
@@ -125,6 +133,7 @@ public class EnterpriseServlet extends HttpServlet {
 		enterprise.setUserName(req.getParameter("userName"));
 		enterprise.setPassword(req.getParameter("password"));
 		enterprise.setCountries(Integer.parseInt(req.getParameter("countries")));
+		enterprise.setEnterpriseStatus(Integer.parseInt(req.getParameter("enterpriseStatus")));
 		return dao.edit(enterprise);
 	}
 
@@ -144,6 +153,7 @@ public class EnterpriseServlet extends HttpServlet {
 		enterprise.setUserName(req.getParameter("userName"));
 		enterprise.setPassword(req.getParameter("password"));
 		enterprise.setCountries(Integer.parseInt(req.getParameter("countries")));
+		enterprise.setEnterpriseStatus(Integer.parseInt(req.getParameter("enterpriseStatus")));
 		return dao.add(enterprise);
 	}
 

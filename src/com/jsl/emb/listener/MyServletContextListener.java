@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.log4j.Logger;
 import org.quartz.CalendarIntervalScheduleBuilder;
 import org.quartz.DailyTimeIntervalScheduleBuilder;
 import org.quartz.JobBuilder;
@@ -18,11 +19,13 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 
+
 import com.jsl.emb.job.OutCountriesJsonFileJob;
 import com.jsl.emb.job.OutTypeJsonFileJob;
 
 public class MyServletContextListener implements ServletContextListener{
 	
+	Logger logger= Logger.getLogger(MyServletContextListener.class);
 	
 	  // Grab the Scheduler instance from the Factory
     Scheduler scheduler ;
@@ -66,17 +69,25 @@ public class MyServletContextListener implements ServletContextListener{
 
      
              
-             Trigger trigger1 = TriggerBuilder.newTrigger()
+             /*Trigger trigger1 = TriggerBuilder.newTrigger()
                  .withIdentity("trigger1", "group1")
                  .startAt(new SimpleDateFormat("hh:mm:ss").parse("10:01:00"))
                        .withSchedule(CalendarIntervalScheduleBuilder.calendarIntervalSchedule().
                          withIntervalInDays(1))            
-                 .build();
+                 .build();*/
+             
+             Trigger trigger1 = TriggerBuilder.newTrigger()
+                     .withIdentity("trigger1", "group1")
+                           .withSchedule(DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule().startingDailyAt(TimeOfDay.hourAndMinuteOfDay(6, 1))
+                        		   .endingDailyAt(TimeOfDay.hourAndMinuteOfDay(11, 1))
+                        		   .onEveryDay()
+                        		   .withIntervalInMinutes(1))            
+                     .build();
 
              Trigger trigger2 = TriggerBuilder.newTrigger()
                      .withIdentity("trigger2", "group1")
                            .withSchedule(DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule().startingDailyAt(TimeOfDay.hourAndMinuteOfDay(6, 1))
-                        		   .endingDailyAt(TimeOfDay.hourAndMinuteOfDay(10, 1))
+                        		   .endingDailyAt(TimeOfDay.hourAndMinuteOfDay(11, 1))
                         		   .onEveryDay()
                         		   .withIntervalInMinutes(1))            
                      .build();
@@ -86,10 +97,8 @@ public class MyServletContextListener implements ServletContextListener{
              scheduler.scheduleJob(job2, trigger2);
 
          } catch (SchedulerException se) {
-             se.printStackTrace();
-         } catch (ParseException e) {
-			e.printStackTrace();
-		}
+        	 logger.error(se.getMessage(), se);
+         }
 		
 	}
 	
@@ -98,7 +107,7 @@ public class MyServletContextListener implements ServletContextListener{
 		try {
 			scheduler.shutdown();
 		} catch (SchedulerException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	

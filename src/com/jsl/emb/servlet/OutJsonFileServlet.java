@@ -14,11 +14,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.jsl.emb.dao.InfoDAO;
 import com.jsl.emb.util.OutFile;
 
 public class OutJsonFileServlet extends HttpServlet{
+	
+	Logger logger= Logger.getLogger(OutJsonFileServlet.class);
 	
 	/**
 	 * 
@@ -33,20 +37,15 @@ public class OutJsonFileServlet extends HttpServlet{
 		try {
 			outputJsonFile();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
@@ -60,12 +59,15 @@ public class OutJsonFileServlet extends HttpServlet{
 		Map<String, String> map = new HashMap<String, String>();
 		//查询危化品使用企业发的信息
 		map.put("enterpriseType", "101");
+		map.put("startDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		String jsonString101 = "{\"total\":"+dao.select(map).size()+",\"rows\":"+JSON.toJSONString(dao.select(map))+"}";
 		//查询危化品经营企业发的信息
 		map.put("enterpriseType", "102");
+		map.put("startDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		String jsonString102 = "{\"total\":"+dao.select(map).size()+",\"rows\":"+JSON.toJSONString(dao.select(map))+"}";
 		//查询危化品经营生产发的信息
 		map.put("enterpriseType", "103");
+		map.put("startDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		String jsonString103 = "{\"total\":"+dao.select(map).size()+",\"rows\":"+JSON.toJSONString(dao.select(map))+"}";
 		//查询所有县市区有多少企业未发当天信息
 		String jsonString_Countries = JSON.toJSONString(dao.selectUnpublicEnterprise());
@@ -75,7 +77,7 @@ public class OutJsonFileServlet extends HttpServlet{
 			OutFile.createJsonFile(jsonString103, "\\data", "103");
 			OutFile.createJsonFile(jsonString_Countries, "\\data", "a");
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
        
 	}

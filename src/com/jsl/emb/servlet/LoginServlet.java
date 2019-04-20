@@ -12,11 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.jsl.emb.bean.Enterprise;
 import com.jsl.emb.util.DBConnection;
 
 public class LoginServlet extends HttpServlet{
+	
+	Logger logger= Logger.getLogger(LoginServlet.class);
 
 	/**
 	 * 
@@ -34,8 +38,6 @@ public class LoginServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("into LoginServlet doPost......");
-		
 		//这里需要转换编码格式，否则会出现json中文乱码
 		resp.setContentType("application/json;charset=utf-8");
 		resp.setCharacterEncoding("utf-8");
@@ -63,9 +65,11 @@ public class LoginServlet extends HttpServlet{
 				out = resp.getWriter();
 				out.println(JSON.toJSONString(enterprise));
 			}
+			resultSet.close();
+			preparedStatement.close();
 			conn.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}finally{
 			
 		}

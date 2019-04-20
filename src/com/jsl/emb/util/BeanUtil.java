@@ -7,7 +7,12 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+import com.jsl.emb.servlet.LoginServlet;
+
 public class BeanUtil {
+	
 	 /**
      * 
      * @param clazz 传入一个需要封装的类

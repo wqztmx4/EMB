@@ -13,12 +13,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.jsl.emb.bean.Info;
 import com.jsl.emb.dao.EnterpriseDAO;
 import com.jsl.emb.dao.InfoDAO;
 
 public class InfoManageServlet extends HttpServlet {
+	
+	Logger logger= Logger.getLogger(InfoManageServlet.class);
 
 	/**
 	 * 
@@ -65,7 +69,7 @@ public class InfoManageServlet extends HttpServlet {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
@@ -122,7 +126,7 @@ public class InfoManageServlet extends HttpServlet {
 		try {
 			return infoDAO.select(map);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		};
 		return null;		
 	}

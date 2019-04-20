@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="copyright" content="All Rights Reserved, Copyright (C) 2013, Wuyeguo, Ltd." />
-<title>潍坊市危化品信息公示系统</title>
+<title>潍坊市危险化学品安全风险研判与承诺公告系统</title>
 <link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="easyui/1.3.4/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="css/wu.css" />
@@ -24,7 +24,7 @@
 	<!-- begin of header -->
 	<div class="wu-header" data-options="region:'north',border:false,split:true">
     	<div class="wu-header-left">
-        	<h1>潍坊市危化品信息公示系统</h1>
+        	<h1>潍坊市危险化学品安全风险研判与承诺公告系统</h1>
         </div>
         <div class="wu-header-right">
         	<p><strong id = "loginName" class="easyui-tooltip"></strong>，欢迎您！</p>
@@ -47,10 +47,13 @@
             <div title="内容发布" data-options="iconCls:'icon-application-form-edit'" style="padding:5px;">  	
     			<ul id = "contentPublic" class="easyui-tree wu-side-tree">
                    <li iconCls="icon-book"><a id="infoPublic" href="javascript:void(0)" data-icon="icon-book" data-link="content/infoPublic.html" iframe="0">公告信息发布</a></li>
+                   <li iconCls="icon-book"><a href="http://218.59.142.6:7089/EMB/show.html" target="_blank">前往展示页面</a></li>
               	</ul>
     			<ul id = "contentManage" class="easyui-tree wu-side-tree">
                     <li iconCls="icon-users"><a  href="javascript:void(0)" data-icon="icon-users" data-link="content/enterpriseManage.html" iframe="0">企业信息管理</a></li>
                     <li iconCls="icon-chart-organisation"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="content/infoManage.html" iframe="0">公告信息管理</a></li>
+                    <li iconCls="icon-cog"><a href="javascript:void(0)" data-icon="icon-user-group" data-link="content/infoStatistics.html" iframe="0">信息统计</a></li>
+                    <li iconCls="icon-book"><a href="http://218.59.142.6:7089/EMB/show.html" target="_blank">前往展示页面</a></li>
                 </ul>
             </div>
         </div>
@@ -191,7 +194,7 @@
 			$('#changePassword-form').form('submit', {
 				url:'enterprise?method=changePassword',
 				onSubmit: function(param){
-						param.enterpriseId = sessionStorage.getItem("id");
+						param.enterpriseId = sessionStorage.getItem("enterpriseId");
 						if($('#confirmPassword').val()==$('#newPassword').val()&&$('#oldPassword').val()!=""&&$('#oldPassword').val()!=null&&$('#newPassword').val()!=""&&$('#newPassword').val()!=null){
 							return true;
 						}else if($('#confirmPassword').val()!=$('#newPassword').val()){

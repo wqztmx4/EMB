@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,7 +16,9 @@ import com.jsl.emb.dao.InfoDAO;
 import com.jsl.emb.util.OutFile;
 
 public class OutCountriesJsonFileJob implements Job {
-
+	
+	Logger logger= Logger.getLogger(OutCountriesJsonFileJob.class);
+	
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
@@ -27,18 +30,20 @@ public class OutCountriesJsonFileJob implements Job {
 			//输出查询结果
 			OutFile.createJsonFile(jsonString_Countries, "\\data", "a");
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			} catch (IllegalArgumentException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			} catch (IllegalAccessException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			} catch (InvocationTargetException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			} catch (InstantiationException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 	}
+	
+	
 
 }

@@ -20,14 +20,14 @@
 		<div class="wu-toolbar-search">
 			<!--             <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
             <label>结束时间：</label><input class="easyui-datebox" style="width:100px"> -->
-			<label>企 业 类 型：</label> <select id="search_enterpriseType" class="easyui-combobox" panelHeight="auto" style="width: 100px">
+			<label>企 业 类 型：</label> <select id="search_enterpriseType_em" class="easyui-combobox" panelHeight="auto" style="width: 100px">
 				<option value="">全部类型</option>
 				<option value="101">危化品使用</option>
 				<option value="102">危化品经营</option>
 				<option value="103">危化品生产</option>
 			</select> 
 			<label>所 在 区 县：</label> 
-			<select id="search_countries" class="easyui-combobox" panelHeight="auto" style="width: 100px">
+			<select id="search_countries_em" class="easyui-combobox" panelHeight="auto" style="width: 100px">
 				<option value="">所有区县</option>
 				<option value="2">青州市</option>
 				<option value="3">诸城市</option>
@@ -46,12 +46,20 @@
 				<option value="16">峡山区</option>
 				<option value="17">经济区</option>
 			</select> 
-			<label> 企业名称：</label><input id="search_enterpriseName" class="wu-text" style="width: 100px"> 
+			<label> 企业名称：</label><input id="search_enterpriseName_em" class="wu-text" style="width: 100px"> 
+			<label>企 业 状 态：</label> <select id="search_enterpriseStatus_em" class="easyui-combobox" panelHeight="auto" style="width: 100px">
+				<option value="">所有状态</option>
+				<option value="0">正常</option>
+				<option value="1">临时停产</option>
+				<option value="2">长期停产</option>
+			</select> 
 			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchInfo_enterprise()">开始检索</a>
 		</div>
 	</div>
 	<!-- End of toolbar -->
-	<table id="enterpriseManage-datagrid" class="easyui-datagrid" ></table>
+	<div data-options="region:'center',split:true,title:''">
+		<table id="enterpriseManage-datagrid"></table>
+	</div>
 </div>
 
 
@@ -102,6 +110,14 @@
 				<option value="15">滨海区</option>
 				<option value="16">峡山区</option>
 				<option value="17">经济区</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td align="right">企 业 状 态:</td>
+				<td><select id="enterpriseStatus" class="easyui-combobox" name="enterpriseStatus" style="width: 200px;">
+						<option value="0">正常</option>
+						<option value="1">临时停产</option>
+						<option value="2">长期停产</option>
 				</select></td>
 			</tr>
 
@@ -324,9 +340,10 @@
 			url:'enterprise?method=select',
 			type:'POST',
 			data:{
-				search_enterpriseType:$('#search_enterpriseType').combobox('getValue'),
-				search_countries:$('#search_countries').combobox('getValue'),
-				search_enterpriseName:$('#search_enterpriseName').val()
+				search_enterpriseType:$('#search_enterpriseType_em').combobox('getValue'),
+				search_countries:$('#search_countries_em').combobox('getValue'),
+				search_enterpriseName:$('#search_enterpriseName_em').val(),
+				search_enterpriseStatus:$('#search_enterpriseStatus_em').combobox('getValue')
 			},
 			success:function(data){
 					 $('#enterpriseManage-datagrid').datagrid('loadData',data);
@@ -461,7 +478,21 @@
 					break;
 				}
 				
-			}}
+			}},
+			{ field:'enterpriseStatus',title:'企业状态',width:100,formatter:function (value, row , index){
+				switch (row.enterpriseStatus) {
+				case 0:
+					return "正常";
+					break;
+				case 1:
+					return "临时停产";
+					break;
+				case 2:
+					return "长期停产";
+					break;
+				default:
+					break;
+				}}}
 		]],
 	onDblClickRow: function(rowIndex,rowData){
 		$('#enterpriseManage-form').form('clear');

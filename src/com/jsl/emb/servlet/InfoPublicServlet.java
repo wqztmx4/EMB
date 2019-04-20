@@ -13,12 +13,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSON;
 import com.jsl.emb.bean.Enterprise;
 import com.jsl.emb.bean.Info;
 import com.jsl.emb.dao.InfoDAO;
 
 public class InfoPublicServlet extends HttpServlet {
+	
+	Logger logger= Logger.getLogger(InfoPublicServlet.class);
 
 	/**
 	 * 
@@ -63,7 +67,7 @@ public class InfoPublicServlet extends HttpServlet {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 
@@ -74,6 +78,9 @@ public class InfoPublicServlet extends HttpServlet {
 
 	private int edit(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
 		Info info = new Info();
+		if(req.getParameter("id")==""||req.getParameter("id")==null){
+			return 0;
+		}
 		info.setId(Integer.parseInt(req.getParameter("id")));
 		info.setPublicContent(req.getParameter("publicContent"));
 		return infoDAO.edit(info);
@@ -96,15 +103,15 @@ public class InfoPublicServlet extends HttpServlet {
 			map.put("enterpriseId", req.getParameter("enterpriseId"));
 		}
 		if(req.getParameter("search_startDate")!=null&&req.getParameter("search_startDate")!=""){
-			map.put("search_startDate", req.getParameter("search_startDate"));
+			map.put("startDate", req.getParameter("search_startDate"));
 		}
 		if(req.getParameter("search_endDate")!=null&&req.getParameter("search_endDate")!=""){
-			map.put("search_endDate", req.getParameter("search_endDate"));
+			map.put("endDate", req.getParameter("search_endDate"));
 		}
 		try {
 			return infoDAO.select(map);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		};
 		return null;		
 	}

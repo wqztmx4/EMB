@@ -8,8 +8,14 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
+import com.jsl.emb.servlet.EnterpriseServlet;
+
 
 public class OutFile {
+	
+	static Logger logger= Logger.getLogger(OutFile.class);
 
 	
 	 public static boolean createJsonFile(String jsonString, String filePath, String fileName) throws IOException {
@@ -17,7 +23,7 @@ public class OutFile {
 	        boolean flag = true;
 
 	        // 拼接文件完整路径
-	        String fullPath = new File("").getCanonicalPath() + filePath+ File.separator + fileName + ".json";
+	        String fullPath = System.getProperty("catalina.home") + "/webapps/EMB"+filePath+ File.separator + fileName + ".json";
 
 	        // 生成json格式文件
 	        try {
@@ -60,7 +66,7 @@ public class OutFile {
 	            write.close();
 	        } catch (Exception e) {
 	            flag = false;
-	            e.printStackTrace();
+	            logger.error(e.getMessage(), e);
 	        }
 
 	        // 返回是否成功的标记

@@ -443,7 +443,7 @@
 }
 .tabs-header {
   border-width: 1px;
-  border-style: solid;
+  border-style: solid; 
   border-bottom-width: 0;
   position: relative;
   padding: 0;

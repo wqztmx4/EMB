@@ -6,7 +6,7 @@
 			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a> 
 			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a> -->
 			<a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openView_infoManage()" plain="true">查看</a> 
-<!-- 			<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="import_infoManage()" plain="true">导入</a> -->
+<!-- 		<a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="import_infoManage()" plain="true">导入</a> -->
 			<!-- <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>
@@ -19,20 +19,20 @@
 		</div>
 		<div class="wu-toolbar-search">
 			<label>起始时间：</label>
-			<input id="search_startDate" class="easyui-datebox" style="width: 100px"> 
+			<input id="search_startDate_im" class="easyui-datebox" style="width: 100px"> 
 			<label>结束时间：</label>
-			<input id="search_endDate" class="easyui-datebox" style="width: 100px"> 
+			<input id="search_endDate_im" class="easyui-datebox" style="width: 100px"> 
 				<label>企 业 类 型：</label> 
-				<select id="search_enterpriseType" class="easyui-combobox"  style="width:100px">
+				<select id="search_enterpriseType_im" class="easyui-combobox"  style="width:100px">
 					<option value="">全部类型</option>
 					<option value="101">危化品使用</option>
 					<option value="102">危化品经营</option>
 					<option value="103">危化品生产</option>
 				</select> 
 			<label>企 业 名 称：</label>
-			<input id = "search_enterpriseName" class="wu-text" style="width:100px">
+			<input id = "search_enterpriseName_im" class="wu-text" style="width:100px">
 			<label>县 区：</label> 
-			<select id="search_countries" class="easyui-combobox"  style="width:100px">
+			<select id="search_countries_im" class="easyui-combobox"  style="width:100px">
 				<option value="">所有区县</option>
 				<option value="2">青州市</option>
 				<option value="3">诸城市</option>
@@ -53,10 +53,15 @@
 			</select> 
 			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="searchInfoManage()">开始检索</a>
 		</div>
-	</div>
+		</div >
 	<!-- End of toolbar -->
-	<table id="infoManage-datagrid" class="easyui-datagrid" style="width: 100%"></table>
+	<div data-options="region:'center',split:true">
+		<table id="infoManage-datagrid"></table>
+	</div>
+
 </div>
+
+
 <!-- Begin of easyui-dialog -->
 <div id="infoManage-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width: 700px; padding: 10px;">
 	<form id="infoManage-form" method="post">
@@ -110,11 +115,6 @@
             </tr>
 		</table>
 	</form>
-</div>
-
-
-<div id="dd" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'" style="width: 700px; padding: 10px;">
-    <input class="easyui-filebox" data-options="buttonText:'选择',prompt:'请选择文件...'" style="width:300px">
 </div>
 <!-- End of easyui-dialog -->
 <script type="text/javascript">
@@ -172,17 +172,20 @@ function openView_infoManage(){
 
 
 
+/**
+ * 根据检索条件，查询相关信息
+ */
 	function searchInfoManage(){
 	
 		  $.ajax({
 				url:'infoManage?method=select',
 				type:"POST",
 				data:{
-					search_startDate:$('#search_startDate').datebox('getValue'),
-					search_endDate:$('#search_endDate').datebox('getValue'),
-					search_enterpriseType:$('#search_enterpriseType').combobox('getValue'),
-					search_countries:$('#search_countries').combobox('getValue'),
-					search_enterpriseName:$('#search_enterpriseName').val()
+					search_startDate:$('#search_startDate_im').datebox('getValue'),
+					search_endDate:$('#search_endDate_im').datebox('getValue'),
+					search_enterpriseType:$('#search_enterpriseType_im').combobox('getValue'),
+					search_countries:$('#search_countries_im').combobox('getValue'),
+					search_enterpriseName:$('#search_enterpriseName_im').val()
 				},
 				success:function(data){
 						 $('#infoManage-datagrid').datagrid('loadData',data);
@@ -260,7 +263,7 @@ function openView_infoManage(){
 			width : 80,
 			formatter: function(value,row,index){
 				var date = new Date(row.publicDate);
-				date = date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate();
+				date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 				return date;
 			}
 		}, {
@@ -289,28 +292,52 @@ function openView_infoManage(){
 					return "市直";
 					break;
 				case 2:
-					return "青州";
+					return "青州市";
 					break;
 				case 3:
-					return "诸城";
+					return "诸城市";
 					break;
 				case 4:
-					return "寿光";
+					return "寿光市";
 					break;
 				case 5:
-					return "安丘";
+					return "安丘市";
 					break;
 				case 6:
-					return "高密";
+					return "高密市";
 					break;
 				case 7:
-					return "昌邑";
+					return "昌邑市";
 					break;
 				case 8:
-					return "临朐";
+					return "临朐市";
 					break;
 				case 9:
-					return "昌乐";
+					return "昌乐市";
+					break;
+				case 10:
+					return "奎文区";
+					break;
+				case 11:
+					return "潍城区";
+					break;
+				case 12:
+					return "寒亭区";
+					break;
+				case 13:
+					return "坊子区";
+					break;
+				case 14:
+					return "高新区";
+					break;
+				case 15:
+					return "滨海区";
+					break;
+				case 16:
+					return "峡山";
+					break;
+				case 17:
+					return "经济区";
 					break;
 				default:
 					return "";

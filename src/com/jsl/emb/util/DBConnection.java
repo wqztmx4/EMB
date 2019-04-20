@@ -11,10 +11,15 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.jsl.emb.servlet.EnterpriseServlet;
 
 public class DBConnection {
+	
+	static Logger logger= Logger.getLogger(DBConnection.class);
 
 	private static DataSource dataSource;
 	
@@ -41,7 +46,7 @@ public class DBConnection {
 			try {
 				return dataSource.getConnection();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 				System.out.println("datasource对象未被创建");
 				return null;
 			}

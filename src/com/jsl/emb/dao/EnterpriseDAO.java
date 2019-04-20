@@ -11,11 +11,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.jsl.emb.bean.Enterprise;
 import com.jsl.emb.util.BeanUtil;
 import com.jsl.emb.util.DBConnection;
 
 public class EnterpriseDAO {
+	
+	Logger logger = Logger.getLogger(EnterpriseDAO.class);
 	
 	
 	/**
@@ -26,7 +30,7 @@ public class EnterpriseDAO {
 	 */
 	public int add(Enterprise enterprise) throws SQLException{
 		Connection connection = DBConnection.getConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement("insert into enterprise(enterpriseName,enterpriseType,acceptor,userName,password,countries,role) VALUES(?,?,?,?,?,?,?)");
+		PreparedStatement preparedStatement = connection.prepareStatement("insert into enterprise(enterpriseName,enterpriseType,acceptor,userName,password,countries,role,e_order,enterpriseStatus) VALUES(?,?,?,?,?,?,?,?,?)");
 		preparedStatement.setString(1, enterprise.getEnterpriseName());
 		preparedStatement.setString(2, enterprise.getEnterpriseType());
 		preparedStatement.setString(3, enterprise.getAcceptor());
@@ -34,8 +38,16 @@ public class EnterpriseDAO {
 		preparedStatement.setString(5, enterprise.getPassword());
 		preparedStatement.setInt(6, enterprise.getCountries());
 		preparedStatement.setInt(7, enterprise.getRole());
+		if(enterprise.getEnterpriseType().equals("101")){
+			preparedStatement.setInt(8, 1);
+		}else if(enterprise.getEnterpriseType().equals("102")){
+			preparedStatement.setInt(8, 2);
+		}else if(enterprise.getEnterpriseType().equals("103")){
+			preparedStatement.setInt(8, 3);
+		}
+		preparedStatement.setInt(9, enterprise.getEnterpriseStatus());
 		int insertNum = preparedStatement.executeUpdate();
-		System.out.println(preparedStatement.toString());
+		logger.info("add enterprise method "+preparedStatement.toString());
 		preparedStatement.close();
 		connection.close();
 		return insertNum;
@@ -51,7 +63,7 @@ public class EnterpriseDAO {
 	 */
 	public int edit(Enterprise enterprise) throws SQLException{
 		Connection connection = DBConnection.getConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement("update enterprise set enterpriseName = ?,enterpriseType = ?,acceptor = ?,userName = ?,password = ?,countries = ?,role = ? where id = ?");
+		PreparedStatement preparedStatement = connection.prepareStatement("update enterprise set enterpriseName = ?,enterpriseType = ?,acceptor = ?,userName = ?,password = ?,countries = ?,role = ? ,enterpriseStatus = ? where id = ?");
 		preparedStatement.setString(1, enterprise.getEnterpriseName());
 		preparedStatement.setString(2, enterprise.getEnterpriseType());
 		preparedStatement.setString(3, enterprise.getAcceptor());
@@ -59,9 +71,10 @@ public class EnterpriseDAO {
 		preparedStatement.setString(5, enterprise.getPassword());
 		preparedStatement.setInt(6, enterprise.getCountries());
 		preparedStatement.setInt(7, enterprise.getRole());
-		preparedStatement.setInt(8, enterprise.getId());
+		preparedStatement.setInt(8, enterprise.getEnterpriseStatus());
+		preparedStatement.setInt(9, enterprise.getId());
 		int insertNum = preparedStatement.executeUpdate();
-		System.out.println(preparedStatement.toString());
+		logger.info("edit enterprise info method "+preparedStatement.toString());
 		preparedStatement.close();
 		connection.close();
 		return insertNum;
@@ -80,6 +93,7 @@ public class EnterpriseDAO {
 		PreparedStatement preparedStatement = connection.prepareStatement("delete from enterprise where id in (?)");
 		preparedStatement.setString(1, ids);
 		int insertNum = preparedStatement.executeUpdate();
+		logger.info("remove enterprise");
 		preparedStatement.close();
 		connection.close();
 		return insertNum;
@@ -111,7 +125,8 @@ public class EnterpriseDAO {
 		}
 		sql+=pl_sql;
 		}
-		System.out.println(sql);
+		sql+=" order by e_order desc , countries asc";
+		logger.info(sql);
 		Connection connection = DBConnection.getConnection();
 		PreparedStatement preparedStatement= connection.prepareStatement(sql);
 		ResultSet resultSet = preparedStatement.executeQuery();

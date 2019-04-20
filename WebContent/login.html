@@ -9,8 +9,26 @@
 
 <link rel="stylesheet" type="text/css" href="css/login.css" />
 <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
 
-<script type="text/javascript">
+<script type="text/javascript"> 
+	  //自动添加用户名密码
+	  function autoPwd(){
+		$("#username").val($.cookie("username"));
+		$("#password").val($.cookie("password"));
+	  }
+	  
+	  
+	  //记住用户名密码
+	  function Save() {
+	      var str_username = $("#username").val();
+	      var str_password = $("#password").val();
+	      $.cookie("username", str_username, { expires: 365 });
+	      $.cookie("password", str_password, { expires: 365 });
+	  };
+
+
+
 	function checkLogin() {
 		var userName = document.getElementById("userName").value;
 		var password = document.getElementById("password").value;
@@ -25,6 +43,7 @@
 	}
 
 	function login() {
+		Save();
 		if (checkLogin) {
 			$.ajax({
 				//几个参数需要注意一下
@@ -35,7 +54,8 @@
 				success : function(result) {
 					if(result!=null){
 						console.log(result);//打印服务端返回的数据(调试用)
-						sessionStorage.setItem("id",result.id);
+						sessionStorage.clear();
+						sessionStorage.setItem("enterpriseId",result.id);
 						sessionStorage.setItem("enterpriseName",result.enterpriseName);
 						sessionStorage.setItem("enterpriseType",result.enterpriseType);
 						sessionStorage.setItem("acceptor",result.acceptor);
@@ -59,16 +79,13 @@
 <body>
 	<div class="header">
 		<div class="k1">
-			<!-- <a href="javascript(0)" class="logo">
-				
-			</a> -->
-			<span style="font-size: 50px;color:#00dbf5; ">潍坊市危化品信息公示系统</span>
+				<img alt="" src="images/logo.jpg">	
 		</div>
 	</div>
 	<script type="text/javascript"></script>
 	<div class="main main_bg1 main_bg2">
-		<div class="k1">
-			<div class="login r">
+		
+			<div class="login">
 				<ul class="hd" id="hd">
 					<li class="on">普通登录</li>
 					<!-- <li>手机动态登录</li> -->
@@ -76,12 +93,12 @@
 				<ul class="bd" id="bd">
 					<li style="display: block;">
 						<form id="formLogin" name="formLogin" method="post">
-							<input type="text" class="tex" placeholder="用户名" name="userName" />
-							<input type="password" class="tex tex2" placeholder="密码"
+							<input id="username" type="text" class="tex" placeholder="用户名" name="userName" />
+							<input id="password" type="password" class="tex tex2" placeholder="密码"
 								name="password" />
-							<!-- <div class="forgive">
+<!-- 							<div class="forgive">
 								<label class="l"> <input type="checkbox" class="che"
-									value="1" name="remember" id="remember" /> 自动登录
+									value="1" name="remember" id="remember" /> 记住账号
 								</label>
 								<a href="user.php?act=forgot" class="a2 r">忘记密码?</a>
 							</div> -->
@@ -95,11 +112,16 @@
 					</li>
 					<li>2</li>
 				</ul>
-			</div>
+		
 		</div>
 	</div>
 
 	<div class="footer">
 	</div>
+	<script type="text/javascript">
+	$(document).ready(function () {
+		autoPwd();
+	})
+	</script>
 </body>
 </html>

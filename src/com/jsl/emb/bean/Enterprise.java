@@ -20,6 +20,11 @@ public class Enterprise {
 	private int    countries;
 	//角色，暂时默认企业角色为9
 	private int    role = 9;
+	//企业排序
+	private int e_order;
+	//企业状态    
+	//正常：0，临时停产：1，长期停产，2；
+	private int enterpriseStatus;
 	
 	
 	
@@ -79,8 +84,21 @@ public class Enterprise {
 	public void setRole(int role) {
 		this.role = role;
 	}
-	
-	
+	public int getE_order() {
+		return e_order;
+	}
+	public void setE_order(int e_order) {
+		this.e_order = e_order;
+	}
+	public int getEnterpriseStatus() {
+		return enterpriseStatus;
+	}
+	public void setEnterpriseStatus(int enterpriseStatus) {
+		this.enterpriseStatus = enterpriseStatus;
+	}
+
+
+
 
 	/**
 	 * 与info表关联
@@ -93,6 +111,7 @@ public class Enterprise {
 	public void setInfos(ArrayList<Info> infos) {
 		this.infos = infos;
 	}
+
 
 
 }
