@@ -1,6 +1,7 @@
 package com.jsl.emb.bean;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Enterprise {
 	
@@ -111,6 +112,22 @@ public class Enterprise {
 	public void setInfos(ArrayList<Info> infos) {
 		this.infos = infos;
 	}
+	
+	
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Enterprise enterprise = (Enterprise) o;
+        return userName == enterprise.userName &&
+                Objects.equals(enterpriseName, enterprise.enterpriseName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userName, enterpriseName);
+    }
+
 
 
 

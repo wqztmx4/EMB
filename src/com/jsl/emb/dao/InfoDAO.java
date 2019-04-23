@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +121,7 @@ public class InfoDAO {
 		String sql = "select a.id, enterpriseName,countries ,enterpriseType from enterprise a where a.id  NOT IN(select enterpriseId from info where publicDate = ?)  and (enterpriseType=101 or enterpriseType=103)  and enterpriseStatus<>2";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		preparedStatement.setString(1, new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		//preparedStatement.setString(1, "2019-4-21");
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			Enterprise enterprise = (Enterprise)BeanUtil.autoBean(Enterprise.class, resultSet);
@@ -143,16 +146,16 @@ public class InfoDAO {
 	 * @throws IllegalArgumentException 
 	 * @throws IllegalAccessException 
 	 */
-	public List<Info> statisticsByTime(Map<String, String> map) throws SQLException, ParseException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+/*	public List<Info> statisticsByTime(Map<String, String> map) throws SQLException, ParseException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
 		List<Info> infos = new ArrayList<Info>();
 		Connection connection = DBConnection.getConnection();
-		String sql = "select a.enterpriseName ,a.countries,b.publicDate,b.publicContent from enterprise a LEFT JOIN info b on a.id = b.enterpriseId and publicDate= ?  WHERE countries = ? and enterpriseStatus <>2  and (enterpriseType = 101 or enterpriseType = 103)  ";
+		String sql = "select a.enterpriseName ,a.countries,b.publicDate,b.publicContent from enterprise a LEFT JOIN info b on a.id = b.enterpriseId and publicDate= ?  WHERE  enterpriseStatus <>2  and (enterpriseType = 101 or enterpriseType = 103)  ";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		ResultSet resultSet = null;
 		List<String> dates = CalendarUtil.findEveryDay(map.get("startDate"), map.get("endDate"));
 		for (int i = 0; i < dates.size(); i++) {
 			preparedStatement.setString(1, dates.get(i));
-			preparedStatement.setString(2, map.get("countries"));
+			//preparedStatement.setString(2, map.get("countries"));
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Enterprise enterprise = (Enterprise)BeanUtil.autoBean(Enterprise.class, resultSet);
@@ -169,6 +172,113 @@ public class InfoDAO {
 		preparedStatement.close();
 		connection.close();
 		return infos;
+	}*/
+	
+	
+	
+	/**
+	 * 
+	 * @param map 根据传入参数，查询某一天的未发布企业
+	 * @return
+	 * @throws SQLException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws InstantiationException
+	 */
+	public List<Enterprise> queryStatisticsByDate(Map<String, String> map) throws SQLException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException{
+		List<Enterprise> enterprises = new ArrayList<Enterprise>();
+		Connection connection = DBConnection.getConnection();
+		String sql = "select a.id, enterpriseName,countries ,enterpriseType from enterprise a where a.id  NOT IN(select enterpriseId from info where publicDate = ?)  and (enterpriseType=101 or enterpriseType=103)  and enterpriseStatus<>2";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setString(1, map.get("startDate"));
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			Enterprise enterprise = (Enterprise)BeanUtil.autoBean(Enterprise.class, resultSet);
+			enterprises.add(enterprise);
+		}
+		resultSet.close();
+		preparedStatement.close();
+		connection.close();
+		return enterprises;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 根据规则，查询连续两天未发或者一周三天没发信息的企业
+	 * @return
+	 * @throws SQLException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws InstantiationException
+	 * @throws ParseException
+	 */
+	public List<Enterprise> queryUnrecordByRole() throws SQLException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, ParseException {
+		List[] arrList = new List[7];
+		List<Enterprise> enterprises = new ArrayList<Enterprise>();
+		Connection connection = DBConnection.getConnection();
+		String sql = "select a.id, enterpriseName,countries ,enterpriseType from enterprise a where a.id  NOT IN(select enterpriseId from info where publicDate = ?)  and (enterpriseType=101 or enterpriseType=103)  and enterpriseStatus<>2";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		List<String> dates = CalendarUtil.findEveryDay(new SimpleDateFormat("yyyy-MM-dd").format(CalendarUtil.getBeginDayOfLastWeek()), new SimpleDateFormat("yyyy-MM-dd").format(CalendarUtil.getEndDayOfLastWeek()));
+		for (int i = 0; i < dates.size(); i++) {
+			preparedStatement.setString(1, dates.get(i));
+			ResultSet resultSet = preparedStatement.executeQuery();
+			List<Enterprise> temp = new ArrayList<Enterprise>();
+			while (resultSet.next()) {
+				Enterprise enterprise = (Enterprise)BeanUtil.autoBean(Enterprise.class, resultSet);
+				
+				temp.add(enterprise);
+				
+				enterprises.add(enterprise);
+			}
+			arrList[i] = temp;
+			resultSet.close();
+		}
+		
+		
+		List<Enterprise> repeatElements = new ArrayList<Enterprise>();
+		
+		//此处为查找连续两天未发的企业
+		for (int i = 0; i < arrList.length-1; i++) {
+			List<Enterprise> es = new ArrayList<Enterprise>();
+			es.addAll(arrList[i]);
+			es.addAll(arrList[i+1]);
+			for (int j = 0; j < es.size()-1; j++) {
+				for (int j2 = j+1; j2 < es.size(); j2++) {
+					if(es.get(j).getEnterpriseName().equals(es.get(j2).getEnterpriseName())){
+						if(!repeatElements.contains(es.get(j))){
+							repeatElements.add(es.get(j));
+						}
+					}
+				}
+			}
+		}
+		
+		//此处为查找一周内三天未发的企业。
+		Map<Enterprise,Integer> map = new HashMap<Enterprise, Integer>();
+		for (int i = 0; i < enterprises.size(); i++) {
+			if(map.containsKey(enterprises.get(i))){
+				map.put(enterprises.get(i),map.get(enterprises.get(i))+1);
+			}else{
+				map.put(enterprises.get(i),0);
+			}
+		}
+		for (Map.Entry<Enterprise, Integer> entry : map.entrySet()) {
+			if(entry.getValue()==3){
+				if(!repeatElements.contains(entry.getKey())){
+					repeatElements.add(entry.getKey());
+				}
+			}
+		}
+		
+		
+		preparedStatement.close();
+		connection.close();
+		return repeatElements;
 	}
 
 }

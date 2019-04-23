@@ -79,7 +79,7 @@ public class MyServletContextListener implements ServletContextListener{
              Trigger trigger1 = TriggerBuilder.newTrigger()
                      .withIdentity("trigger1", "group1")
                            .withSchedule(DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule().startingDailyAt(TimeOfDay.hourAndMinuteOfDay(6, 1))
-                        		   .endingDailyAt(TimeOfDay.hourAndMinuteOfDay(11, 1))
+                        		   .endingDailyAt(TimeOfDay.hourAndMinuteOfDay(12, 1))
                         		   .onEveryDay()
                         		   .withIntervalInMinutes(1))            
                      .build();
@@ -87,7 +87,7 @@ public class MyServletContextListener implements ServletContextListener{
              Trigger trigger2 = TriggerBuilder.newTrigger()
                      .withIdentity("trigger2", "group1")
                            .withSchedule(DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule().startingDailyAt(TimeOfDay.hourAndMinuteOfDay(6, 1))
-                        		   .endingDailyAt(TimeOfDay.hourAndMinuteOfDay(11, 1))
+                        		   .endingDailyAt(TimeOfDay.hourAndMinuteOfDay(12, 1))
                         		   .onEveryDay()
                         		   .withIntervalInMinutes(1))            
                      .build();

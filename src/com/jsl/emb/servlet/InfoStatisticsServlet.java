@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
+import com.jsl.emb.bean.Enterprise;
 import com.jsl.emb.bean.Info;
 import com.jsl.emb.dao.EnterpriseDAO;
 import com.jsl.emb.dao.InfoDAO;
@@ -60,8 +61,8 @@ public class InfoStatisticsServlet extends HttpServlet {
 			if(method.equals("select")){
 				//根据返回的对象构造前台的分页json数据结构
 				out.println("{\"total\":"+select(req,resp).size()+",\"rows\":"+JSON.toJSONString(select(req,resp))+"}");
-			}else if (method.equals("add")) {
-				out.println("{\"changedNum\":"+add(req, resp)+"}");
+			}else if (method.equals("queryUnrecordByRole")) {
+				out.println("{\"total\":"+queryUnrecordByRole(req,resp).size()+",\"rows\":"+JSON.toJSONString(queryUnrecordByRole(req,resp))+"}");
 			} else if (method.equals("edit")) {
 				out.println("{\"changedNum\":"+edit(req, resp)+"}");
 			} else if (method.equals("remove")) {
@@ -77,6 +78,12 @@ public class InfoStatisticsServlet extends HttpServlet {
 	
 	
 	
+	private List<Enterprise> queryUnrecordByRole(HttpServletRequest req,
+			HttpServletResponse resp) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException, SQLException, ParseException {
+		return infoDAO.queryUnrecordByRole();
+	}
+
+
 	private int remove(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
 		/*String ids = req.getParameter("remove_ids");
 		return dao.remove(ids);*/
@@ -101,7 +108,7 @@ public class InfoStatisticsServlet extends HttpServlet {
 		return 0;
 	}
 
-	private List<Info> select(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IllegalAccessException, InvocationTargetException, InstantiationException, ParseException {
+	private List<Enterprise> select(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IllegalAccessException, InvocationTargetException, InstantiationException, ParseException {
 		Map<String, String> map = new HashMap<String, String>();
 		if(req.getParameter("id")!=null){
 			map.put("id", req.getParameter("id"));
@@ -125,7 +132,7 @@ public class InfoStatisticsServlet extends HttpServlet {
 			map.put("enterpriseName", req.getParameter("search_enterpriseName"));
 		}
 		try {
-			return infoDAO.statisticsByTime(map);
+			return infoDAO.queryStatisticsByDate(map);
 		} catch (IllegalArgumentException e) {
 			logger.error(e.getMessage(), e);
 		};
